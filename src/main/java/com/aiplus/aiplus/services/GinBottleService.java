@@ -17,10 +17,10 @@ public class GinBottleService {
     private GinBottleDAO ginBottleDAO;
 
     @Autowired
-    private GinBrandDAO ginBrandDAO;  // Assumo che esista un DAO per GinBrand
+    private GinBrandDAO ginBrandDAO;
 
     @Transactional
-    public void addGinBottleWithImage(Long brandId, LocalDate productionDate, String imageUrl) {
+    public void addGinBottleWithImage(String brandId, LocalDate productionDate, String imageUrl) {
         GinBrand brand = ginBrandDAO.findById(brandId).orElse(null);
         if (brand != null) {
             GinBottle bottle = new GinBottle();
