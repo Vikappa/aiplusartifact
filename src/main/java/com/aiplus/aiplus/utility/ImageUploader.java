@@ -4,8 +4,9 @@ import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
+import java.io.IOException;
 import java.util.Map;
 
 @Component
@@ -18,11 +19,18 @@ public class ImageUploader {
         this.cloudinary = cloudinary;
     }
 
-    public String uploadImage(String filePath) {
+    public String uploadImage(MultipartFile file) throws IOException {
+        if (file == null || file.isEmpty()) {
+            return null;
+        }
+
         try {
-            File toUpload = new File(filePath);
-            Map uploadResult = cloudinary.uploader().upload(toUpload, ObjectUtils.emptyMap());
+            // Utilizza `getBytes()` per ottenere il contenuto binario del file
+            Map uploadResult = cloudinary.uploader().upload(file.getBytes(), ObjectUtils.emptyMap());
             return (String) uploadResult.get("url");
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw e;
         } catch (Exception e) {
             e.printStackTrace();
             return null;
