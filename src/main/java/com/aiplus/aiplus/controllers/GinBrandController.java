@@ -56,5 +56,11 @@ public class GinBrandController {
         List<GinBrand> brands = ginBrandService.findAll();
         return ResponseEntity.ok(brands);
     }
+
+    @GetMapping("/{brandName}")
+    public ResponseEntity<GinBrand> getBrandByName(@PathVariable String brandName) {
+        GinBrand brand = ginBrandService.findByName(brandName);
+        return ResponseEntity.ok(brand);
+    }
 }
 

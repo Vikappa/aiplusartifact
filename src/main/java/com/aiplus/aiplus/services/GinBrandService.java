@@ -39,5 +39,9 @@ public class GinBrandService {
         ginBrand.setSovrapprezzo(ginBrandDTO.getSovrapprezzo());
         ginBrandDAO.save(ginBrand);
     }
+
+    public GinBrand findByName(String brandName) {
+        return ginBrandDAO.findByName(brandName);
+    }
 }
 

@@ -15,4 +15,7 @@ public interface GinBrandDAO extends JpaRepository<GinBrand, String> {
 
     @Query("SELECT g FROM GinBrand g")
     List<GinBrand> findAll();
+
+    @Query("SELECT g FROM GinBrand g WHERE g.name = :brandName")
+    GinBrand findByName(String brandName);
 }
