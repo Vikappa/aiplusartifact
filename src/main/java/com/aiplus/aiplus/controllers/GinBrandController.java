@@ -62,5 +62,12 @@ public class GinBrandController {
         GinBrand brand = ginBrandService.findByName(brandName);
         return ResponseEntity.ok(brand);
     }
+
+    @DeleteMapping("/{brandName}")
+    public ResponseEntity<String> deleteBrandByName(@PathVariable String brandName) {
+        ginBrandService.deleteBrandByName(brandName);
+        return ResponseEntity.ok("Gin brand deleted successfully!");
+    }
+
 }
 

@@ -43,5 +43,10 @@ public class GinBrandService {
     public GinBrand findByName(String brandName) {
         return ginBrandDAO.findByName(brandName);
     }
+
+    public void deleteBrandByName(String brandName) {
+        GinBrand brand = ginBrandDAO.findByName(brandName);
+        ginBrandDAO.delete(brand);
+    }
 }
 
