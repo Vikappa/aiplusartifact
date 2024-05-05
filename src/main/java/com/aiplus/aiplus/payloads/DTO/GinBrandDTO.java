@@ -16,5 +16,6 @@ public class GinBrandDTO {
     private MultipartFile imageFile;
     private String description;
     private double sovrapprezzo;
-
 }
+
+
