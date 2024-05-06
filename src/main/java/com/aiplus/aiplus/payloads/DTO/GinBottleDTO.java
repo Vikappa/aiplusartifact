@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import com.aiplus.aiplus.entities.GINFLAVOUR;
+import com.aiplus.aiplus.entities.stockentities.GINFLAVOUR;
 import java.time.LocalDate;
 
 
@@ -13,6 +13,8 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 public class GinBottleDTO {
+    private String name;
+    private String UM;
     private String brandId;
     private LocalDate productionDate;
     private String imageUrl;

@@ -1,6 +1,6 @@
 package com.aiplus.aiplus.services;
 
-import com.aiplus.aiplus.entities.GinBrand;
+import com.aiplus.aiplus.entities.stockentities.GinBrand;
 import com.aiplus.aiplus.payloads.DTO.GinBrandDTO;
 import com.aiplus.aiplus.repositories.GinBrandDAO;
 import org.springframework.beans.factory.annotation.Autowired;

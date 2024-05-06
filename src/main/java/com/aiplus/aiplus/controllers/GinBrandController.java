@@ -1,6 +1,6 @@
 package com.aiplus.aiplus.controllers;
 
-import com.aiplus.aiplus.entities.GinBrand;
+import com.aiplus.aiplus.entities.stockentities.GinBrand;
 import com.aiplus.aiplus.payloads.DTO.GinBrandDTO;
 import com.aiplus.aiplus.services.GinBrandService;
 import com.aiplus.aiplus.utility.ImageUploader;

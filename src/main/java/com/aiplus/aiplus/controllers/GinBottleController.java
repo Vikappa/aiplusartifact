@@ -1,6 +1,6 @@
 package com.aiplus.aiplus.controllers;
 
-import com.aiplus.aiplus.entities.GinBottle;
+import com.aiplus.aiplus.entities.stockentities.GinBottle;
 import com.aiplus.aiplus.payloads.DTO.GinBottleDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

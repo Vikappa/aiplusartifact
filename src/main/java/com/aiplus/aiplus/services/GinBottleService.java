@@ -1,7 +1,7 @@
 package com.aiplus.aiplus.services;
 
-import com.aiplus.aiplus.entities.GinBottle;
-import com.aiplus.aiplus.entities.GinBrand;
+import com.aiplus.aiplus.entities.stockentities.GinBottle;
+import com.aiplus.aiplus.entities.stockentities.GinBrand;
 import com.aiplus.aiplus.payloads.DTO.GinBottleDTO;
 import com.aiplus.aiplus.repositories.GinBottleDAO;
 import com.aiplus.aiplus.repositories.GinBrandDAO;
@@ -12,8 +12,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-
-import static org.hibernate.query.sqm.tree.SqmNode.log;
 
 @Service
 public class GinBottleService {
@@ -47,13 +45,19 @@ public class GinBottleService {
             return;
         }
 
+        LocalDate expirationDate = ginBottleDto.getProductionDate().plusYears(2);
+
         GinBottle bottle = new GinBottle();
         bottle.setBrand(brand);
         bottle.setProductionDate(ginBottleDto.getProductionDate());
         bottle.setImageUrl(ginBottleDto.getImageUrl());
-        bottle.setVolume(ginBottleDto.getVolume());  // Assumendo che questi campi siano aggiunti al DTO
+        bottle.setVolume(ginBottleDto.getVolume());
         bottle.setAlcoholPercentage(ginBottleDto.getAlcoholPercentage());
         bottle.setBatchNumber(ginBottleDto.getBatchNumber());
+        bottle.setCurrentVolume(ginBottleDto.getVolume());
+        bottle.setExpirationDate(expirationDate);
+        bottle.setName(ginBottleDto.getName());
+        bottle.setUM(ginBottleDto.getUM());
         bottle.setFlavour(ginBottleDto.getFlavour());
 
         ginBottleDAO.save(bottle);

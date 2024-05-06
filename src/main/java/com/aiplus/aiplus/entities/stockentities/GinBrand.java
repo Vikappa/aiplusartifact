@@ -1,4 +1,4 @@
-package com.aiplus.aiplus.entities;
+package com.aiplus.aiplus.entities.stockentities;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

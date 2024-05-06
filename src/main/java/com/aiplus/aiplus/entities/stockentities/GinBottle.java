@@ -1,9 +1,8 @@
-package com.aiplus.aiplus.entities;
+package com.aiplus.aiplus.entities.stockentities;
 
 import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDate;
-import java.math.BigDecimal;
 
 @Getter
 @Setter
@@ -11,11 +10,8 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @Entity
 @Table(name = "gin_bottle")
-public class GinBottle {
+public class GinBottle extends Prodotto {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
 
     @ManyToOne
     @JoinColumn(name = "brand_id", nullable = false)
@@ -24,8 +20,11 @@ public class GinBottle {
     @Column(name = "production_date", nullable = false)
     private LocalDate productionDate;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "volume")
     private double volume;
+
+    @Column(name = "current_volume")
+    private double currentVolume;
 
     @Column(name = "alcohol_percentage", nullable = false)
     private double alcoholPercentage;
@@ -44,5 +43,7 @@ public class GinBottle {
     public void setFlavour(GINFLAVOUR flavour) {
         this.flavour = GINFLAVOUR.valueOf(flavour.name());
     }
+
+
 }
 
