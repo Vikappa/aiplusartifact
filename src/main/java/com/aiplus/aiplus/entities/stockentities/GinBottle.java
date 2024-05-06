@@ -4,14 +4,13 @@ import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDate;
 
+@Entity
+@DiscriminatorValue("GIN_BOTTLE")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
-@Table(name = "gin_bottle")
 public class GinBottle extends Prodotto {
-
 
     @ManyToOne
     @JoinColumn(name = "brand_id", nullable = false)
@@ -38,12 +37,10 @@ public class GinBottle extends Prodotto {
     @Column(name = "image_url")
     private String imageUrl;
 
+    @Enumerated(EnumType.STRING)
     private GINFLAVOUR flavour;
 
     public void setFlavour(GINFLAVOUR flavour) {
         this.flavour = GINFLAVOUR.valueOf(flavour.name());
     }
-
-
 }
-
