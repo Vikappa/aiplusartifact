@@ -59,5 +59,17 @@ public class GinBottleService {
         ginBottleDAO.save(bottle);
         log.info("Gin bottle saved successfully with id: {}", bottle.getId());
     }
+
+    public GinBottle getGinBottle(long id) {
+        return ginBottleDAO.findById(id).orElse(null);
+    }
+
+    public Iterable<GinBottle> getAllGinBottles() {
+        return ginBottleDAO.findAll();
+    }
+
+    public void deleteGinBottle(long id) {
+        ginBottleDAO.deleteById(id);
+    }
 }
 
