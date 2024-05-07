@@ -22,7 +22,7 @@ public class SecurityConfig {
                 .formLogin(http -> http.disable()) // Disabilita il form di login
                 .csrf(http -> http.disable()) // Disabilita la protezione da CSRF
                 .sessionManagement(http -> http.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // Disabilita le sessioni
-                .authorizeRequests(http -> http.requestMatchers("/**").permitAll()) // Consenti tutte le richieste
+                .authorizeRequests(http -> http.requestMatchers("/**").permitAll()) // Disabilita il meccanismo di autenticazione di default
                 .exceptionHandling(http -> http
                         .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.NOT_FOUND))); // Imposta l'entry point per la risposta 404
         return httpSecurity.build();
