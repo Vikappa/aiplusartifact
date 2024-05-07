@@ -1,5 +1,6 @@
 package com.aiplus.aiplus.security;
 
+import com.aiplus.aiplus.exceptions.UnauthorizedException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -25,12 +26,22 @@ public class JWTFilter extends OncePerRequestFilter {
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
         AntPathMatcher pathMatcher = new AntPathMatcher();
         return  pathMatcher.match("/admin/**", request.getServletPath()) ||
-                pathMatcher.match("/users/**", request.getServletPath()) ||
                 pathMatcher.match("/login/**", request.getServletPath());
     }
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest request,
+                                    HttpServletResponse response,
+                                    FilterChain filterChain) throws ServletException, IOException {
 
+        String authorizationHeader = request.getHeader("Authorization");
+        if(authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
+            throw new UnauthorizedException("Missing authorization header");
+        }
+
+         String accesstoken = authorizationHeader.substring(7);
+        jwtTools.verifyToken(accesstoken);
+
+        filterChain.doFilter(request, response);
     }
 }

@@ -1,6 +1,7 @@
 package com.aiplus.aiplus.security;
 
 import com.aiplus.aiplus.entities.users.User;
+import com.aiplus.aiplus.exceptions.UnauthorizedException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
@@ -26,7 +27,11 @@ public class JWTTools {
 
 
     public void verifyToken(String token){
-
+        try {
+        Jwts.parser().verifyWith(Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8))).build().parse(token);
+        } catch (Exception e){
+            throw new UnauthorizedException("Invalid token");
+        }
 
     }
 

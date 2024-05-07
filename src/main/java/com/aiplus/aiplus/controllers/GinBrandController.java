@@ -14,7 +14,7 @@ import java.util.List;
 import java.io.IOException;
 
 @RestController
-@RequestMapping("/admin/ginbrand")
+@RequestMapping("/ginbrand")
 public class GinBrandController {
 
     @Autowired
@@ -54,6 +54,7 @@ public class GinBrandController {
     @GetMapping("/getall")
     public ResponseEntity<List<GinBrand>> getAllBrands() {
         List<GinBrand> brands = ginBrandService.findAll();
+        System.out.println(brands);
         return ResponseEntity.ok(brands);
     }
 

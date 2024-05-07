@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import com.aiplus.aiplus.services.GinBottleService;
 
 @RestController
-@RequestMapping("/admin/ginbottle")
+@RequestMapping("/ginbottle")
 public class GinBottleController {
 
     @Autowired
