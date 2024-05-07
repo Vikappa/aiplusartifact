@@ -22,7 +22,9 @@ public class LoginServices {
 
     public String authenticateUserAndGenerateToken(UserLoginDTO userLoginDTO){
 
+        try {
         User user = userDAO.findByEmail(userLoginDTO.email());
+
         if (user == null) {
             throw new UserNotFoundException("User not found with email: " + userLoginDTO.email());
         }
@@ -33,6 +35,9 @@ public class LoginServices {
         }
 
         return jwtTools.createToken(user);
+        } catch (UserNotFoundException e) {
+            return e.getMessage();
+        }
     }
 
     public User getUserByEmail(String email) {
