@@ -7,8 +7,7 @@ import com.aiplus.aiplus.payloads.login.UserLoginDTO;
 import com.aiplus.aiplus.repositories.UserDAO;
 import com.aiplus.aiplus.security.JWTTools;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import com.aiplus.aiplus.entities.users.USER_ROLE;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -37,6 +36,15 @@ public class LoginServices {
         return jwtTools.createToken(user);
         } catch (UserNotFoundException e) {
             return e.getMessage();
+        }
+    }
+
+    public USER_ROLE getRole(UserLoginDTO userLoginDTO){
+        try {
+            User user = userDAO.findByEmail(userLoginDTO.email());
+            return user.getRole();
+        } catch (UserNotFoundException e) {
+            throw new UnauthorizedException("Invalid credentials, cannot find role");
         }
     }
 
