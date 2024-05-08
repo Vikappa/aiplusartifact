@@ -8,6 +8,8 @@ import com.aiplus.aiplus.repositories.UserDAO;
 import com.aiplus.aiplus.security.JWTTools;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.aiplus.aiplus.entities.users.USER_ROLE;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -20,7 +22,7 @@ public class LoginServices {
     JWTTools jwtTools;
 
     public String authenticateUserAndGenerateToken(UserLoginDTO userLoginDTO){
-
+        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         try {
         User user = userDAO.findByEmail(userLoginDTO.email());
 
@@ -28,12 +30,12 @@ public class LoginServices {
             throw new UserNotFoundException("User not found with email: " + userLoginDTO.email());
         }
 
-
-        if (!user.getPassword().equals(userLoginDTO.password())) {
+        if (!passwordEncoder.matches(userLoginDTO.password(), user.getPassword())) {
             throw new UnauthorizedException("Invalid credentials");
         }
 
         return jwtTools.createToken(user);
+
         } catch (UserNotFoundException e) {
             return e.getMessage();
         }
