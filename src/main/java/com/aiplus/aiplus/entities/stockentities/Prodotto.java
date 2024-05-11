@@ -1,5 +1,6 @@
 package com.aiplus.aiplus.entities.stockentities;
 
+import com.aiplus.aiplus.entities.movimenti.Carico;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -22,5 +23,9 @@ import lombok.Setter;
     public String UM;
 
     public String name;
+
+    @ManyToOne
+    @JoinColumn(name = "nCarico")
+    private Carico carico;
 
 }

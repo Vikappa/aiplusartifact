@@ -24,6 +24,19 @@ public class User {
     private String surname;
     private String email;
     private String password;
+
+    @Enumerated(EnumType.STRING)
     private USER_ROLE role;
 
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", surname='" + surname + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", role=" + role +
+                '}';
+    }
 }

@@ -10,21 +10,16 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Entity
-public class GinBrand {
+public class BrandTonica {
 
     @Id
     @Column(updatable = false, nullable = false)
     private String name;
 
+    private String imgUrl;
     private String description;
-
-    @Column(name = "image_url")
-    private String imageUrl;
-
-    private double sovrapprezzo;
-
 
 }

@@ -32,10 +32,10 @@ public class GinBottleController {
         return ResponseEntity.status(HttpStatus.OK).body(ginBottleService.getAllGinBottles());
     }
 
-
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteGinBottle(@PathVariable("id") long id) {
         ginBottleService.deleteGinBottle(id);
         return ResponseEntity.status(HttpStatus.OK).body("Gin bottle deleted successfully!");
     }
+
 }

@@ -14,6 +14,7 @@ import org.springframework.util.AntPathMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Optional;
 
 @Component
@@ -39,9 +40,15 @@ public class JWTFilter extends OncePerRequestFilter {
             throw new UnauthorizedException("Missing authorization header");
         }
 
-         String accesstoken = authorizationHeader.substring(7);
-        jwtTools.verifyToken(accesstoken);
+        String accessToken = authorizationHeader.substring(7);
+        jwtTools.verifyToken(accessToken);
+        String username = jwtTools.extractUsername(accessToken);
+
+        // Set up the security context
+        Authentication authentication = new UsernamePasswordAuthenticationToken(username, null, new ArrayList<>());
+        SecurityContextHolder.getContext().setAuthentication(authentication);
 
         filterChain.doFilter(request, response);
     }
+
 }

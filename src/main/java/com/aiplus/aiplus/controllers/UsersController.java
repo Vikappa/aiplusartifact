@@ -2,7 +2,9 @@ package com.aiplus.aiplus.controllers;
 
 import com.aiplus.aiplus.entities.users.User;
 import com.aiplus.aiplus.payloads.login.RegisterUserDTO;
+import com.aiplus.aiplus.security.JWTTools;
 import com.aiplus.aiplus.services.UserService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.aiplus.aiplus.repositories.UserDAO;
 import org.springframework.http.HttpStatus;
@@ -19,6 +21,9 @@ import java.util.List;
 public class UsersController {
 
     PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
+    @Autowired
+    JWTTools jwtTools;
 
     @Autowired
     private UserService userService;
@@ -45,7 +50,6 @@ public class UsersController {
         user.setPassword(passwordEncoder.encode(body.password()));
 
         if (userDAO.existsByEmail(user.getEmail())) {
-            // Lancia un'eccezione con stato HTTP 409 (Conflict) se l'email non è unica
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Email already in use");
         }
 
@@ -53,4 +57,20 @@ public class UsersController {
 
         return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
     }
+
+    @GetMapping("/profile")
+    public ResponseEntity<User> getUserProfile(@RequestHeader(value="Authorization") String token) {
+        try {
+
+            System.out.println(token);
+
+            User user = userService.getUserByToken(token);
+            System.out.println(user.toString());
+
+            return ResponseEntity.ok(user);
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Errore get profile from token");
+        }
+    }
+
 }
