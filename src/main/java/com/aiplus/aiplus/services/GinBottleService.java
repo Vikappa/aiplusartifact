@@ -2,9 +2,12 @@ package com.aiplus.aiplus.services;
 
 import com.aiplus.aiplus.entities.stockentities.GinBottle;
 import com.aiplus.aiplus.entities.stockentities.GinBrand;
+import com.aiplus.aiplus.entities.stockentities.GinFlavour;
 import com.aiplus.aiplus.payloads.DTO.GinBottleDTO;
 import com.aiplus.aiplus.repositories.GinBottleDAO;
 import com.aiplus.aiplus.repositories.GinBrandDAO;
+import com.aiplus.aiplus.repositories.GinFlavourDAO;
+import jakarta.persistence.EntityNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,38 +20,40 @@ import java.time.LocalDate;
 public class GinBottleService {
     private static final Logger log = LoggerFactory.getLogger(GinBottleService.class);
 
+
     @Autowired
     private GinBottleDAO ginBottleDAO;
 
     @Autowired
     private GinBrandDAO ginBrandDAO;
 
-    @Transactional
-    public void addGinBottleWithImage(String brandId, LocalDate productionDate, String imageUrl) {
-        GinBrand brand = ginBrandDAO.findById(brandId).orElse(null);
-        if (brand != null) {
-            GinBottle bottle = new GinBottle();
-            bottle.setBrand(brand);
-            bottle.setProductionDate(productionDate);
-            bottle.setImageUrl(imageUrl);
-            ginBottleDAO.save(bottle);
-        } else {
-            System.out.println("Marchio di gin non trovato.");
-        }
-    }
+    @Autowired
+    private GinFlavourDAO ginFlavourDAO;
 
     @Transactional
     public void addGinBottle(GinBottleDTO ginBottleDto) {
-        GinBrand brand = ginBrandDAO.findById(ginBottleDto.getBrandId()).orElse(null);
-        if (brand == null) {
-            log.error("Brand not found for id: {}", ginBottleDto.getBrandId());
-            return;
+        Logger log = LoggerFactory.getLogger(this.getClass());
+
+        if (ginBottleDto.getBrandId() == null) {
+            log.error("Null brand ID provided");
+            throw new IllegalArgumentException("Brand ID must not be null");
+        }
+
+        GinBrand brand = ginBrandDAO.findById(ginBottleDto.getBrandId())
+                .orElseThrow(() -> new EntityNotFoundException("Brand not found for ID: " + ginBottleDto.getBrandId()));
+
+
+
+        GinFlavour flavour = ginFlavourDAO.findByName(ginBottleDto.getGinFlavourString());
+        if(flavour == null){
+            throw new EntityNotFoundException("Flavour not found for name: " + ginBottleDto.getGinFlavourString());
         }
 
         LocalDate expirationDate = ginBottleDto.getProductionDate().plusYears(2);
 
         GinBottle bottle = new GinBottle();
         bottle.setBrand(brand);
+        bottle.setGinFlavour(flavour);
         bottle.setProductionDate(ginBottleDto.getProductionDate());
         bottle.setImageUrl(ginBottleDto.getImageUrl());
         bottle.setVolume(ginBottleDto.getVolume());
@@ -58,11 +63,13 @@ public class GinBottleService {
         bottle.setExpirationDate(expirationDate);
         bottle.setName(ginBottleDto.getName());
         bottle.setUM(ginBottleDto.getUM());
-        bottle.setFlavour(ginBottleDto.getFlavour());
+        bottle.setGinFlavour(flavour);
 
         ginBottleDAO.save(bottle);
         log.info("Gin bottle saved successfully with id: {}", bottle.getId());
     }
+
+
 
     public GinBottle getGinBottle(long id) {
         return ginBottleDAO.findById(id).orElse(null);
