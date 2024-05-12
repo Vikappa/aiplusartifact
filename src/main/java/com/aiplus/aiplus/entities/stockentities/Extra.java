@@ -1,12 +1,10 @@
 package com.aiplus.aiplus.entities.stockentities;
 
-import jakarta.persistence.DiscriminatorValue;
-import jakarta.persistence.Entity;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
 import java.time.LocalDate;
 
 @Getter
@@ -16,7 +14,10 @@ import java.time.LocalDate;
 @Entity
 @DiscriminatorValue("ALIMENTO_EXTRA")
 public class Extra extends Prodotto {
-    FLAVOURS flavour;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "flavour_id")
+    private Flavour flavour;
 
-    LocalDate scadenza_ingrediente;
+    @Column(name = "scadenza_ingrediente")
+    private LocalDate scadenza_ingrediente;
 }

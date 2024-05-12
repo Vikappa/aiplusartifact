@@ -1,19 +1,20 @@
 package com.aiplus.aiplus.entities.stockentities;
 
-import jakarta.persistence.DiscriminatorValue;
-import jakarta.persistence.Entity;
-import lombok.AllArgsConstructor;
+import jakarta.persistence.*;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+@Entity
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Entity
 @DiscriminatorValue("GUARNIZIONE")
 public class Guarnizione extends Prodotto {
-    FLAVOURS flavour;
-    COLORS_GUARNIZIONI colore;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "flavour_id", nullable = false)
+    private Flavour flavour;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "colore_id")
+    private ColoreGuarnizione colore;
+
 }

@@ -37,10 +37,8 @@ public class GinBottle extends Prodotto {
     @Column(name = "image_url")
     private String imageUrl;
 
-    @Enumerated(EnumType.STRING)
-    private GINFLAVOUR flavour;
+    @ManyToOne
+    @JoinColumn(name = "gin_flavour_id", nullable = false)
+    private GinFlavour ginFlavour;
 
-    public void setFlavour(GINFLAVOUR flavour) {
-        this.flavour = GINFLAVOUR.valueOf(flavour.name());
-    }
 }
