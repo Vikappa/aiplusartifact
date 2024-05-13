@@ -21,6 +21,11 @@ public class CaricoController {
         return caricoService.getAllCarichi();
     }
 
+    @GetMapping("/getlastcarico")
+    public ResponseEntity<Integer> getLastCarico() {
+        return caricoService.getLastCarico();
+    }
+
     @PostMapping
     public ResponseEntity<Carico> addCarico(@RequestBody NewCarico body) {
         return caricoService.addCarico(body);

@@ -28,4 +28,9 @@ public class CaricoService {
         carico.setProdotti(body.prodotti());
         return ResponseEntity.ok(caricoDAO.save(carico));
     }
+
+    public ResponseEntity<Integer> getLastCarico() {
+        Integer lastCarico = caricoDAO.findAll().size();
+        return ResponseEntity.ok(lastCarico);
+    }
 }

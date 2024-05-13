@@ -7,5 +7,6 @@ import java.util.ArrayList;
 
 public record NewCarico(
         User operatore,
-        ArrayList<Prodotto> prodotti
+        ArrayList<Prodotto> prodotti,
+        String note
 ) {}

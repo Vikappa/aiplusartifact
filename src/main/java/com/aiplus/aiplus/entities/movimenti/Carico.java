@@ -28,4 +28,6 @@ public class Carico {
 
     @OneToMany(mappedBy = "carico", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Prodotto> prodotti;
+
+    private String note;
 }
