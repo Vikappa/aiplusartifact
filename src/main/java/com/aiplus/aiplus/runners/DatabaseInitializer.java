@@ -1,8 +1,12 @@
 package com.aiplus.aiplus.runners;
 
+import com.aiplus.aiplus.entities.stockentities.ColoreGuarnizione;
+import com.aiplus.aiplus.entities.stockentities.Flavour;
 import com.aiplus.aiplus.entities.stockentities.GinFlavour;
 import com.aiplus.aiplus.entities.users.User;
 import com.aiplus.aiplus.entities.users.USER_ROLE;
+import com.aiplus.aiplus.repositories.ColoreGuarnizioneDAO;
+import com.aiplus.aiplus.repositories.FlavourDAO;
 import com.aiplus.aiplus.repositories.GinFlavourDAO;
 import com.aiplus.aiplus.repositories.UserDAO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +26,12 @@ public class DatabaseInitializer {
     private UserDAO userDao;
     @Autowired
     private GinFlavourDAO ginFlavourDAO;
+
+    @Autowired
+    private FlavourDAO flavourDAO;
+
+    @Autowired
+    private ColoreGuarnizioneDAO coloreGuarnizioneDAO;
 
     public DatabaseInitializer(UserDAO userDao, GinFlavourDAO ginFlavourDAO) {
         this.userDao = userDao;
@@ -54,6 +64,23 @@ public class DatabaseInitializer {
                 ginFlavourDAO.save(flavour);
             }
             System.out.println("Sapori Gin initializzati");
+        }
+
+        if(flavourDAO.count()==0){
+            for (FLAVOURS fflavourENUM : FLAVOURS.values()){
+                Flavour fflavour = new Flavour();
+                fflavour.setName(fflavourENUM.name());
+                flavourDAO.save(fflavour);
+            }
+            System.out.println("Sapori Alimenti inizializzati");
+        }
+
+        if(coloreGuarnizioneDAO.count()==0){
+            for(COLORS_GUARNIZIONI garnishColor : COLORS_GUARNIZIONI.values()){
+                ColoreGuarnizione color = new ColoreGuarnizione();
+                color.setName(garnishColor.name());
+                coloreGuarnizioneDAO.save(color);
+            }
         }
     }
 }

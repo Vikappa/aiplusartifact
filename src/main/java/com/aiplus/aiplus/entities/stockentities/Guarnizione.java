@@ -9,6 +9,7 @@ import lombok.Setter;
 @Setter
 @DiscriminatorValue("GUARNIZIONE")
 public class Guarnizione extends Prodotto {
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "flavour_id", nullable = false)
     private Flavour flavour;

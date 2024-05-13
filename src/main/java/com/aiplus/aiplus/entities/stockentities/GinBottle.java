@@ -32,7 +32,7 @@ public class GinBottle extends Prodotto {
     private LocalDate expirationDate;
 
     @Column(name = "batch_number", nullable = false)
-    private long batchNumber;
+    private String batchNumber;
 
     @Column(name = "image_url")
     private String imageUrl;

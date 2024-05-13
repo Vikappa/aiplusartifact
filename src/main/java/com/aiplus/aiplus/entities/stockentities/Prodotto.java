@@ -20,9 +20,9 @@ import lombok.Setter;
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    public String UM;
+    private String UM;
 
-    public String name;
+    private String name;
 
     @ManyToOne
     @JoinColumn(name = "nCarico")

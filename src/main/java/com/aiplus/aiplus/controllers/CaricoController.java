@@ -4,6 +4,7 @@ import com.aiplus.aiplus.entities.movimenti.Carico;
 import com.aiplus.aiplus.payloads.DTO.NewCarico;
 import com.aiplus.aiplus.services.CaricoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,6 +29,13 @@ public class CaricoController {
 
     @PostMapping
     public ResponseEntity<Carico> addCarico(@RequestBody NewCarico body) {
-        return caricoService.addCarico(body);
+        System.out.println("Received NewCarico request: {}" + body.toString());
+        try {
+            return caricoService.addCarico(body);
+        } catch (Exception e) {
+            System.out.println("Error processing NewCarico" + body.toString());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
+
 }

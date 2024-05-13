@@ -58,7 +58,7 @@ public class GinBottleService {
         bottle.setImageUrl(ginBottleDto.getImageUrl());
         bottle.setVolume(ginBottleDto.getVolume());
         bottle.setAlcoholPercentage(ginBottleDto.getAlcoholPercentage());
-        bottle.setBatchNumber(ginBottleDto.getBatchNumber());
+        bottle.setBatchNumber(String.valueOf(ginBottleDto.getBatchNumber()));
         bottle.setCurrentVolume(ginBottleDto.getVolume());
         bottle.setExpirationDate(expirationDate);
         bottle.setName(ginBottleDto.getName());

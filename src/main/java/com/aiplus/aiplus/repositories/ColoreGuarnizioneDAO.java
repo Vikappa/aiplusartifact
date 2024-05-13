@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ColoreGuarnizioneDAO extends JpaRepository<ColoreGuarnizione, Long> {
+    ColoreGuarnizione findByName(String s);
 }

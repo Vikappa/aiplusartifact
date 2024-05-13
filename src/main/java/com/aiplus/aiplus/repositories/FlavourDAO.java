@@ -6,4 +6,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface FlavourDAO extends JpaRepository<Flavour, Long> {
+
+    Flavour findByName(String s);
+
 }
