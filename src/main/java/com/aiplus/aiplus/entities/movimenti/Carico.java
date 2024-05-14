@@ -2,6 +2,9 @@ package com.aiplus.aiplus.entities.movimenti;
 
 import com.aiplus.aiplus.entities.stockentities.Prodotto;
 import com.aiplus.aiplus.entities.users.User;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -26,6 +29,7 @@ public class Carico {
 
     private String data;
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "carico", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Prodotto> prodotti;
 

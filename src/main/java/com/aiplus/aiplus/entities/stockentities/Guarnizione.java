@@ -10,12 +10,19 @@ import lombok.Setter;
 @DiscriminatorValue("GUARNIZIONE")
 public class Guarnizione extends Prodotto {
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "flavour_id", nullable = false)
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "flavour_id")
     private Flavour flavour;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "colore_id")
     private ColoreGuarnizione colore;
 
+    @Override
+    public String toString() {
+        return "Guarnizione{" +
+                "flavour=" + flavour +
+                ", colore=" + colore +
+                '}';
+    }
 }

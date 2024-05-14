@@ -17,9 +17,17 @@ import java.time.LocalDate;
 public class Tonica extends Prodotto {
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "flavour_id", nullable = false)
+    @JoinColumn(name = "flavour_id")
     private Flavour flavour;
 
     @Column(name = "scadenza_tonica")
     private LocalDate scadenza_tonica;
+
+    @Override
+    public String toString() {
+        return "Tonica{" +
+                "flavour=" + flavour +
+                ", scadenza_tonica=" + scadenza_tonica +
+                '}';
+    }
 }

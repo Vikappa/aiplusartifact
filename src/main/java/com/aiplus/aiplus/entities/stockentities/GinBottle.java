@@ -13,32 +13,46 @@ import java.time.LocalDate;
 public class GinBottle extends Prodotto {
 
     @ManyToOne
-    @JoinColumn(name = "brand_id", nullable = false)
+    @JoinColumn(name = "brand_id")
     private GinBrand brand;
 
-    @Column(name = "production_date", nullable = false)
+    @Column(name = "production_date")
     private LocalDate productionDate;
 
-    @Column(nullable = false, name = "volume")
+    @Column(name = "volume")
     private double volume;
 
     @Column(name = "current_volume")
     private double currentVolume;
 
-    @Column(name = "alcohol_percentage", nullable = false)
+    @Column(name = "alcohol_percentage")
     private double alcoholPercentage;
 
     @Column(name = "expiration_date")
     private LocalDate expirationDate;
 
-    @Column(name = "batch_number", nullable = false)
+    @Column(name = "batch_number")
     private String batchNumber;
 
     @Column(name = "image_url")
     private String imageUrl;
 
     @ManyToOne
-    @JoinColumn(name = "gin_flavour_id", nullable = false)
+    @JoinColumn(name = "gin_flavour_id")
     private GinFlavour ginFlavour;
 
+    @Override
+    public String toString() {
+        return "GinBottle{" +
+                "brand=" + brand +
+                ", productionDate=" + productionDate +
+                ", volume=" + volume +
+                ", currentVolume=" + currentVolume +
+                ", alcoholPercentage=" + alcoholPercentage +
+                ", expirationDate=" + expirationDate +
+                ", batchNumber='" + batchNumber + '\'' +
+                ", imageUrl='" + imageUrl + '\'' +
+                ", ginFlavour=" + ginFlavour +
+                '}';
+    }
 }

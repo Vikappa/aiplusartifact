@@ -14,10 +14,12 @@ import java.time.LocalDate;
 @Entity
 @DiscriminatorValue("ALIMENTO_EXTRA")
 public class Extra extends Prodotto {
-    @ManyToOne(fetch = FetchType.LAZY)
+
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "flavour_id")
     private Flavour flavour;
 
     @Column(name = "scadenza_ingrediente")
     private LocalDate scadenza_ingrediente;
+
 }

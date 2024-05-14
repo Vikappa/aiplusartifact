@@ -5,6 +5,7 @@ import com.aiplus.aiplus.entities.stockentities.*;
 import com.aiplus.aiplus.payloads.DTO.NewCarico;
 import com.aiplus.aiplus.payloads.DTO.NewProdotto;
 import com.aiplus.aiplus.repositories.*;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -31,11 +32,26 @@ public class CaricoService {
     @Autowired
     private ColoreGuarnizioneDAO coloreGuarnizioneDAO;
 
-
+    @Transactional
     public ResponseEntity<List<Carico>> getAllCarichi() {
-        return ResponseEntity.ok(caricoDAO.findAll());
+            List<Carico> carichi = caricoDAO.findAll();
+            for (Carico carico : carichi) {
+                // Accesso alla lista di prodotti per forzarne il caricamento
+                carico.getProdotti().size(); // Forza Hibernate a inizializzare la collezione
+
+                for (Prodotto prodotto : carico.getProdotti()) {
+                    // Forza il caricamento di altre proprietà lazy se necessario
+                    // Esempio: Accesso a collezioni o entità ulteriormente lazy-loaded dentro Prodotto
+                    if (prodotto instanceof GinBottle) {
+                        ((GinBottle) prodotto).getBrand().getName(); // Assumendo che brand sia lazy-loaded
+                    }
+                }
+            }
+
+        return ResponseEntity.ok(carichi);
     }
 
+    @Transactional
     public ResponseEntity<Carico> addCarico(NewCarico body) {
         Carico carico = new Carico();
         carico.setData(LocalDate.now().toString());
@@ -44,8 +60,8 @@ public class CaricoService {
 
         ArrayList<NewProdotto> prodottiDTO = body.prodotti();
         List<Prodotto> prodottiJPA = new ArrayList<>();
-
         for (int i = 0; i < prodottiDTO.size(); i++) {
+        Prodotto prodotto;
             switch(prodottiDTO.get(i).discriminatorString()){
                 case "GIN_BOTTLE":
                     GinBottle newGinBottle = new GinBottle();
@@ -60,7 +76,8 @@ public class CaricoService {
                     newGinBottle.setBatchNumber(prodottiDTO.get(i).batchNumber());
                     newGinBottle.setImageUrl(prodottiDTO.get(i).imageUrl());
                     newGinBottle.setGinFlavour(ginFlavourDAO.findByName(prodottiDTO.get(i).ginFlavourId()));
-                    prodottiJPA.add(newGinBottle);
+                    prodotto = newGinBottle;
+                    prodottiJPA.add(prodotto);
                     break;
                 case "TONICA":
                     Tonica newTonica = new Tonica();
@@ -68,7 +85,8 @@ public class CaricoService {
                     newTonica.setUM(prodottiDTO.get(i).UM());
                     newTonica.setFlavour(flavourDAO.findByName(prodottiDTO.get(i).flavourId()));
                     newTonica.setScadenza_tonica(prodottiDTO.get(i).scadenza_tonica());
-                    prodottiJPA.add(newTonica);
+                    prodotto = newTonica;
+                    prodottiJPA.add(prodotto);
                     break;
                 case "ALIMENTO_EXTRA":
                     Extra newExtra = new Extra();
@@ -76,8 +94,8 @@ public class CaricoService {
                     newExtra.setFlavour(flavourDAO.findByName(prodottiDTO.get(i).flavourId()));
                     newExtra.setScadenza_ingrediente(prodottiDTO.get(i).scadenza_ingrediente());
                     newExtra.setUM(prodottiDTO.get(i).UM());
-
-                    prodottiJPA.add(newExtra);
+                    prodotto = newExtra;
+                    prodottiJPA.add(prodotto);
                     break;
                 case "GUARNIZIONE":
                     Guarnizione newGuarnizione = new Guarnizione();
@@ -85,7 +103,8 @@ public class CaricoService {
                     newGuarnizione.setColore(coloreGuarnizioneDAO.findByName(prodottiDTO.get(i).coloreId()));
                     newGuarnizione.setFlavour(flavourDAO.findByName(prodottiDTO.get(i).flavourId()));
                     newGuarnizione.setUM(prodottiDTO.get(i).UM());
-                    prodottiJPA.add(newGuarnizione);
+                    prodotto = newGuarnizione;
+                    prodottiJPA.add(prodotto);
                     break;
                 default:
                     break;
@@ -93,8 +112,12 @@ public class CaricoService {
 
         }
 
+        for (int y = 0; y < prodottiJPA.size(); y++){
+            prodottiJPA.get(y).setCarico(carico);
+        }
+
         carico.setProdotti(prodottiJPA);
-        return ResponseEntity.ok(carico);
+        return ResponseEntity.ok(caricoDAO.save(carico));
     }
 
     public ResponseEntity<Integer> getLastCarico() {
