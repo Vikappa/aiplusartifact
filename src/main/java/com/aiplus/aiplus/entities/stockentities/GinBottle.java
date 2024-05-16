@@ -41,18 +41,4 @@ public class GinBottle extends Prodotto {
     @JoinColumn(name = "gin_flavour_id")
     private GinFlavour ginFlavour;
 
-    @Override
-    public String toString() {
-        return "GinBottle{" +
-                "brand=" + brand +
-                ", productionDate=" + productionDate +
-                ", volume=" + volume +
-                ", currentVolume=" + currentVolume +
-                ", alcoholPercentage=" + alcoholPercentage +
-                ", expirationDate=" + expirationDate +
-                ", batchNumber='" + batchNumber + '\'' +
-                ", imageUrl='" + imageUrl + '\'' +
-                ", ginFlavour=" + ginFlavour +
-                '}';
-    }
 }

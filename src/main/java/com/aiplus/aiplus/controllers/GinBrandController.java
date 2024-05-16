@@ -45,7 +45,9 @@ public class GinBrandController {
             return ResponseEntity.badRequest().body("Failed to upload image");
         }
 
-        GinBrandDTO ginBrandDTO = new GinBrandDTO(name, imageUrl, null, description, sovrapprezzo);
+        GinBrandDTO ginBrandDTO = new GinBrandDTO();
+
+
         ginBrandService.createGinBrand(ginBrandDTO);
 
         return ResponseEntity.ok("Gin brand added successfully with image!");

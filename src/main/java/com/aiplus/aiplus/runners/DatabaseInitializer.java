@@ -1,14 +1,12 @@
 package com.aiplus.aiplus.runners;
 
+import com.aiplus.aiplus.entities.stockentities.BrandTonica;
 import com.aiplus.aiplus.entities.stockentities.ColoreGuarnizione;
 import com.aiplus.aiplus.entities.stockentities.Flavour;
 import com.aiplus.aiplus.entities.stockentities.GinFlavour;
 import com.aiplus.aiplus.entities.users.User;
 import com.aiplus.aiplus.entities.users.USER_ROLE;
-import com.aiplus.aiplus.repositories.ColoreGuarnizioneDAO;
-import com.aiplus.aiplus.repositories.FlavourDAO;
-import com.aiplus.aiplus.repositories.GinFlavourDAO;
-import com.aiplus.aiplus.repositories.UserDAO;
+import com.aiplus.aiplus.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -32,6 +30,9 @@ public class DatabaseInitializer {
 
     @Autowired
     private ColoreGuarnizioneDAO coloreGuarnizioneDAO;
+
+    @Autowired
+    private BrandTonicaDAO brandTonicaDAO;
 
     public DatabaseInitializer(UserDAO userDao, GinFlavourDAO ginFlavourDAO) {
         this.userDao = userDao;
@@ -82,6 +83,15 @@ public class DatabaseInitializer {
                 coloreGuarnizioneDAO.save(color);
             }
         }
+
+        if(brandTonicaDAO.count() == 0) {
+            for (BASE_GIN_BRANDS brand : BASE_GIN_BRANDS.values()) {
+                BrandTonica brandTonica = new BrandTonica();
+                brandTonica.setName(brand.name());
+                brandTonica.setDescription(brand.name());
+                brandTonicaDAO.save(brandTonica);
+            }
+        }
     }
 }
 
@@ -95,4 +105,8 @@ enum FLAVOURS {
 
 enum COLORS_GUARNIZIONI {
     ROSSO, ROSA, GIALLO, BLU, VERDE, GIALLO_SCURO, TRASPARENTE;
+}
+
+enum BASE_GIN_BRANDS {
+    SWEEPS, FEVER_TREE, CANADA_DRY, SPECTACULAR_Q;
 }
