@@ -32,12 +32,4 @@ public abstract class Prodotto {
     @JoinColumn(name = "nCarico")
     private Carico carico;
 
-    @Override
-    public String toString() {
-        return "Prodotto{" +
-                "id=" + id +
-                ", UM='" + UM + '\'' +
-                ", name='" + name + '\'' +
-                '}';
-    }
 }
