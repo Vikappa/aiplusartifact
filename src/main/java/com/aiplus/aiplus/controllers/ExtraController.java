@@ -1,5 +1,7 @@
 package com.aiplus.aiplus.controllers;
 
+import com.aiplus.aiplus.entities.stockentities.Extra;
+import com.aiplus.aiplus.payloads.records.ExtraRowLineShort;
 import com.aiplus.aiplus.services.ExtraService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +18,7 @@ public class ExtraController {
     private ExtraService extraService;
 
     @RequestMapping("/getinstorelist")
-    public ResponseEntity<List<String>> getInStoreList() {
+    public ResponseEntity<List<ExtraRowLineShort>> getInStoreList() {
         return extraService.getInStoreList();
     }
 
