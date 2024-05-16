@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ExtraService {
@@ -19,12 +20,10 @@ public class ExtraService {
     public ResponseEntity<List<ExtraRowLineShort>> getInStoreList() {
         List<Extra> extras = extraDao.findAll();
 
-        List<ExtraRowLineShort> responseBody = new ArrayList<>();
-
-        for (int i = 0; i < extras.size(); i++) {
-            ExtraRowLineShort newline = new ExtraRowLineShort(extras.get(i).getId(), extras.get(i).getName(), extras.get(i).getUM());;
-        }
-
-        return ResponseEntity.ok(responseBody);
+        return ResponseEntity.ok(extras.stream()
+                .map(extra -> new ExtraRowLineShort(extra.getName(), extra.getUM()))
+                .distinct()
+                .collect(Collectors.toList())) ;
     }
 }
+
