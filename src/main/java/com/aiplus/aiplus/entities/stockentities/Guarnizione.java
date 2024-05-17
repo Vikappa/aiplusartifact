@@ -18,11 +18,4 @@ public class Guarnizione extends Prodotto {
     @JoinColumn(name = "colore_id")
     private ColoreGuarnizione colore;
 
-    @Override
-    public String toString() {
-        return "Guarnizione{" +
-                "flavour=" + flavour +
-                ", colore=" + colore +
-                '}';
-    }
 }
