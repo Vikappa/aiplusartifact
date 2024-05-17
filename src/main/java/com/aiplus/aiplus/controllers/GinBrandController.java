@@ -10,8 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
 import java.io.IOException;
+import java.util.List;
 
 @RestController
 @RequestMapping("/ginbrand")
@@ -36,18 +36,13 @@ public class GinBrandController {
             @RequestParam("sovrapprezzo") double sovrapprezzo,
             @RequestPart("imageFile") MultipartFile imageFile) throws IOException {
 
-        String imageUrl = null;
-        if (imageFile != null && !imageFile.isEmpty()) {
-            imageUrl = imageUploader.uploadImage(imageFile);
-        }
+        String imageUrl = imageUploader.uploadImage(imageFile);
 
         if (imageUrl == null) {
             return ResponseEntity.badRequest().body("Failed to upload image");
         }
 
-        GinBrandDTO ginBrandDTO = new GinBrandDTO();
-
-
+        GinBrandDTO ginBrandDTO = new GinBrandDTO(name, imageUrl, description, sovrapprezzo);
         ginBrandService.createGinBrand(ginBrandDTO);
 
         return ResponseEntity.ok("Gin brand added successfully with image!");
@@ -56,7 +51,6 @@ public class GinBrandController {
     @GetMapping("/getall")
     public ResponseEntity<List<GinBrand>> getAllBrands() {
         List<GinBrand> brands = ginBrandService.findAll();
-        System.out.println(brands);
         return ResponseEntity.ok(brands);
     }
 
@@ -71,6 +65,4 @@ public class GinBrandController {
         ginBrandService.deleteBrandByName(brandName);
         return ResponseEntity.ok("Gin brand deleted successfully!");
     }
-
 }
-

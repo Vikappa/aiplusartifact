@@ -1,9 +1,12 @@
 package com.aiplus.aiplus.controllers;
 
+import com.aiplus.aiplus.payloads.DTO.NewFlavour;
+
 import com.aiplus.aiplus.entities.stockentities.Flavour;
 import com.aiplus.aiplus.services.FlavourService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -17,7 +20,13 @@ public class FlavourController {
     private FlavourService flavourService;
 
     @RequestMapping("/getall")
-    public ResponseEntity<List<Flavour>> getAll(){
+    public ResponseEntity<List<Flavour>> getAll() {
         return flavourService.getAll();
     }
+
+    @PostMapping("/add")
+    public ResponseEntity<Flavour> addFlavour(NewFlavour body) {
+        return flavourService.addFlavour(body);
+    }
+
 }
