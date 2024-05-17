@@ -6,9 +6,7 @@ import com.aiplus.aiplus.entities.stockentities.Flavour;
 import com.aiplus.aiplus.services.FlavourService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -19,14 +17,13 @@ public class FlavourController {
     @Autowired
     private FlavourService flavourService;
 
-    @RequestMapping("/getall")
+    @GetMapping("/getall")
     public ResponseEntity<List<Flavour>> getAll() {
         return flavourService.getAll();
     }
 
     @PostMapping("/add")
-    public ResponseEntity<Flavour> addFlavour(NewFlavour body) {
+    public ResponseEntity<Flavour> addFlavour(@RequestBody NewFlavour body) {
         return flavourService.addFlavour(body);
     }
-
 }
