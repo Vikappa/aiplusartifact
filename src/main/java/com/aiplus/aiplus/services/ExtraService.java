@@ -21,7 +21,7 @@ public class ExtraService {
         List<Extra> extras = extraDao.findAll();
 
         return ResponseEntity.ok(extras.stream()
-                .map(extra -> new ExtraRowLineShort(extra.getName(), extra.getUM()))
+                .map(extra -> new ExtraRowLineShort(extra.getName(), extra.getUM(), extra.getFlavour()))
                 .distinct()
                 .collect(Collectors.toList())) ;
     }

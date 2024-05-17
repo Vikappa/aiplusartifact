@@ -22,4 +22,13 @@ public class Extra extends Prodotto {
     @Column(name = "scadenza_ingrediente")
     private LocalDate scadenza_ingrediente;
 
+    @Column(name = "quantita_extra")
+    private Integer qtaExtra;
+
+    public Integer getQtaExtra() {
+        return qtaExtra;
+    }
+    public void setQtaExtra(int qtaExtra) {
+        this.qtaExtra = qtaExtra;
+    }
 }

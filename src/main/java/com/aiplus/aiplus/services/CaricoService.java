@@ -64,7 +64,7 @@ public class CaricoService {
         ArrayList<NewProdotto> prodottiDTO = body.prodotti();
         List<Prodotto> prodottiJPA = new ArrayList<>();
         for (int i = 0; i < prodottiDTO.size(); i++) {
-        Prodotto prodotto;
+            Prodotto prodotto;
             switch(prodottiDTO.get(i).discriminatorString()){
                 case "GIN_BOTTLE":
                     GinBottle newGinBottle = new GinBottle();
@@ -98,6 +98,7 @@ public class CaricoService {
                     newExtra.setFlavour(flavourDAO.findByName(prodottiDTO.get(i).flavourId()));
                     newExtra.setScadenza_ingrediente(prodottiDTO.get(i).scadenza_ingrediente());
                     newExtra.setUM(prodottiDTO.get(i).UM());
+                    newExtra.setQtaExtra(prodottiDTO.get(i).qtaExtra());
                     prodotto = newExtra;
                     prodottiJPA.add(prodotto);
                     break;
@@ -113,7 +114,6 @@ public class CaricoService {
                 default:
                     break;
             }
-
         }
 
         for (int y = 0; y < prodottiJPA.size(); y++){
@@ -124,8 +124,10 @@ public class CaricoService {
         return ResponseEntity.ok(caricoDAO.save(carico));
     }
 
+
     public ResponseEntity<Integer> getLastCarico() {
         Integer lastCarico = caricoDAO.findAll().size();
         return ResponseEntity.ok(lastCarico);
     }
+
 }
