@@ -23,6 +23,7 @@ public record NewProdotto (
     String flavourId,
     LocalDate scadenza_ingrediente,
 
-    String coloreId
+    String coloreId,
+    String brand_tonica_name
 
 ){}

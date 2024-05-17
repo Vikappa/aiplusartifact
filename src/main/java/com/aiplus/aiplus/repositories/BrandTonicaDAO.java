@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface BrandTonicaDAO extends JpaRepository<BrandTonica, String> {
+    BrandTonica findByName(String s);
 }

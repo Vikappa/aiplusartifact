@@ -30,6 +30,9 @@ public class CaricoService {
     private GinFlavourDAO ginFlavourDAO;
 
     @Autowired
+    private BrandTonicaDAO brandTonicaDAO;
+
+    @Autowired
     private ColoreGuarnizioneDAO coloreGuarnizioneDAO;
 
     @Transactional
@@ -85,6 +88,7 @@ public class CaricoService {
                     newTonica.setUM(prodottiDTO.get(i).UM());
                     newTonica.setFlavour(flavourDAO.findByName(prodottiDTO.get(i).flavourId()));
                     newTonica.setScadenza_tonica(prodottiDTO.get(i).scadenza_tonica());
+                    newTonica.setBrandTonica(brandTonicaDAO.findByName(prodottiDTO.get(i).brand_tonica_name()));
                     prodotto = newTonica;
                     prodottiJPA.add(prodotto);
                     break;

@@ -1,13 +1,14 @@
 package com.aiplus.aiplus.entities.stockentities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.List;
 
 @Getter
 @Setter
@@ -20,6 +21,11 @@ public class BrandTonica {
     @Id
     @Column(updatable = false, nullable = false)
     private String name;
+
     private String description;
+
+    @JsonBackReference
+    @OneToMany(mappedBy = "brandTonica", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Tonica> toniche;
 
 }

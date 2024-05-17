@@ -1,5 +1,7 @@
 package com.aiplus.aiplus.entities.stockentities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -23,11 +25,9 @@ public class Tonica extends Prodotto {
     @Column(name = "scadenza_tonica")
     private LocalDate scadenza_tonica;
 
-    @Override
-    public String toString() {
-        return "Tonica{" +
-                "flavour=" + flavour +
-                ", scadenza_tonica=" + scadenza_tonica +
-                '}';
-    }
+    @JsonManagedReference
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "brand_tonica_name")
+    private BrandTonica brandTonica;
+
 }
