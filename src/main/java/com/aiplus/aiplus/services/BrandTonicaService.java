@@ -1,6 +1,7 @@
 package com.aiplus.aiplus.services;
 
 import com.aiplus.aiplus.entities.stockentities.BrandTonica;
+import com.aiplus.aiplus.payloads.DTO.NewTonicaBrand;
 import com.aiplus.aiplus.repositories.BrandTonicaDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +22,10 @@ public class BrandTonicaService {
         return ResponseEntity.ok(tonicaList);
     }
 
-    public BrandTonica save(BrandTonica brandTonica) {
-        return brandTonicaDAO.save(brandTonica);
+    public ResponseEntity<BrandTonica> createBrandTonica(NewTonicaBrand brandTonicaDTO) {
+        BrandTonica newBrandTonica = new BrandTonica();
+        newBrandTonica.setName(brandTonicaDTO.name());
+        newBrandTonica.setDescription(brandTonicaDTO.description());
+        return ResponseEntity.ok(brandTonicaDAO.save(newBrandTonica));
     }
 }

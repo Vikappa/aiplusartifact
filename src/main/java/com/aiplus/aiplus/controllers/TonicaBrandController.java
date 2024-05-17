@@ -1,6 +1,7 @@
 package com.aiplus.aiplus.controllers;
 
 import com.aiplus.aiplus.entities.stockentities.BrandTonica;
+import com.aiplus.aiplus.payloads.DTO.NewTonicaBrand;
 import com.aiplus.aiplus.services.BrandTonicaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -21,8 +22,7 @@ public class TonicaBrandController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<BrandTonica> addBrandTonica(@RequestBody BrandTonica brandTonica) {
-        BrandTonica savedBrandTonica = brandTonicaService.save(brandTonica);
-        return ResponseEntity.ok(savedBrandTonica);
+    public ResponseEntity<BrandTonica> addBrandTonica(@RequestBody NewTonicaBrand brandTonica) {
+        return brandTonicaService.createBrandTonica(brandTonica);
     }
 }
