@@ -18,4 +18,5 @@ public class Guarnizione extends Prodotto {
     @JoinColumn(name = "colore_id")
     private ColoreGuarnizione colore;
 
+    private Integer quantitaGarnish;
 }

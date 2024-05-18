@@ -108,6 +108,7 @@ public class CaricoService {
                     newGuarnizione.setColore(coloreGuarnizioneDAO.findByName(prodottiDTO.get(i).coloreId()));
                     newGuarnizione.setFlavour(flavourDAO.findByName(prodottiDTO.get(i).flavourId()));
                     newGuarnizione.setUM(prodottiDTO.get(i).UM());
+                    newGuarnizione.setQuantitaGarnish(prodottiDTO.get(i).quantitaGarnish());
                     prodotto = newGuarnizione;
                     prodottiJPA.add(prodotto);
                     break;

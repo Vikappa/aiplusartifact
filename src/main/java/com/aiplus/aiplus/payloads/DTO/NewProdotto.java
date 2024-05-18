@@ -22,6 +22,7 @@ public record NewProdotto (
         LocalDate scadenza_ingrediente,
         String coloreId,
         String brand_tonica_name,
-        Integer qtaExtra
+        Integer qtaExtra,
+        Integer quantitaGarnish
 ) {}
 
