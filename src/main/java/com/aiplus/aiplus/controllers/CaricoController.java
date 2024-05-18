@@ -28,14 +28,10 @@ public class CaricoController {
     }
 
     @PostMapping
-    public ResponseEntity<Carico> addCarico(@RequestBody NewCarico body) {
-        System.out.println("Received NewCarico request: {}" + body.toString());
-        try {
-            return caricoService.addCarico(body);
-        } catch (Exception e) {
-            System.out.println("Error processing NewCarico" + body.toString());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
+    public ResponseEntity<?> addCarico(@RequestBody NewCarico body) {
+        System.out.println("Received request: " + body);
+        return caricoService.addCarico(body);
     }
+
 
 }

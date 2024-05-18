@@ -7,11 +7,16 @@ import com.aiplus.aiplus.payloads.DTO.NewProdotto;
 import com.aiplus.aiplus.repositories.*;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.ErrorResponse;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -55,74 +60,85 @@ public class CaricoService {
     }
 
     @Transactional
-    public ResponseEntity<Carico> addCarico(NewCarico body) {
-        Carico carico = new Carico();
-        carico.setData(LocalDate.now().toString());
-        carico.setOperatore(body.operatore());
-        carico.setNote(body.note());
+    public ResponseEntity<?> addCarico(NewCarico body) {
+        try {
+            Carico carico = new Carico();
+            carico.setData(LocalDate.now().toString());
+            carico.setOperatore(body.operatore());
+            carico.setNote(body.note());
 
-        ArrayList<NewProdotto> prodottiDTO = body.prodotti();
-        List<Prodotto> prodottiJPA = new ArrayList<>();
-        for (int i = 0; i < prodottiDTO.size(); i++) {
-            Prodotto prodotto;
-            switch(prodottiDTO.get(i).discriminatorString()){
-                case "GIN_BOTTLE":
-                    GinBottle newGinBottle = new GinBottle();
-                    newGinBottle.setName(prodottiDTO.get(i).name());
-                    newGinBottle.setUM(prodottiDTO.get(i).UM());
-                    newGinBottle.setBrand(ginBrandDAO.findByName(prodottiDTO.get(i).brandId()));
-                    newGinBottle.setProductionDate(prodottiDTO.get(i).productionDate());
-                    newGinBottle.setVolume(prodottiDTO.get(i).volume());
-                    newGinBottle.setCurrentVolume(prodottiDTO.get(i).volume());
-                    newGinBottle.setAlcoholPercentage(prodottiDTO.get(i).alcoholPercentage());
-                    newGinBottle.setExpirationDate(prodottiDTO.get(i).expirationDate());
-                    newGinBottle.setBatchNumber(prodottiDTO.get(i).batchNumber());
-                    newGinBottle.setImageUrl(prodottiDTO.get(i).imageUrl());
-                    newGinBottle.setGinFlavour(ginFlavourDAO.findByName(prodottiDTO.get(i).ginFlavourId()));
-                    prodotto = newGinBottle;
-                    prodottiJPA.add(prodotto);
-                    break;
-                case "TONICA":
-                    Tonica newTonica = new Tonica();
-                    newTonica.setName(prodottiDTO.get(i).name());
-                    newTonica.setUM(prodottiDTO.get(i).UM());
-                    newTonica.setFlavour(flavourDAO.findByName(prodottiDTO.get(i).flavourId()));
-                    newTonica.setScadenza_tonica(prodottiDTO.get(i).scadenza_tonica());
-                    newTonica.setBrandTonica(brandTonicaDAO.findByName(prodottiDTO.get(i).brand_tonica_name()));
-                    prodotto = newTonica;
-                    prodottiJPA.add(prodotto);
-                    break;
-                case "ALIMENTO_EXTRA":
-                    Extra newExtra = new Extra();
-                    newExtra.setName(prodottiDTO.get(i).name());
-                    newExtra.setFlavour(flavourDAO.findByName(prodottiDTO.get(i).flavourId()));
-                    newExtra.setScadenza_ingrediente(prodottiDTO.get(i).scadenza_ingrediente());
-                    newExtra.setUM(prodottiDTO.get(i).UM());
-                    newExtra.setQtaExtra(prodottiDTO.get(i).qtaExtra());
-                    prodotto = newExtra;
-                    prodottiJPA.add(prodotto);
-                    break;
-                case "GUARNIZIONE":
-                    Guarnizione newGuarnizione = new Guarnizione();
-                    newGuarnizione.setName(prodottiDTO.get(i).name());
-                    newGuarnizione.setColore(coloreGuarnizioneDAO.findByName(prodottiDTO.get(i).coloreId()));
-                    newGuarnizione.setFlavour(flavourDAO.findByName(prodottiDTO.get(i).flavourId()));
-                    newGuarnizione.setUM(prodottiDTO.get(i).UM());
-                    newGuarnizione.setQuantitaGarnish(prodottiDTO.get(i).quantitaGarnish());
-                    prodotto = newGuarnizione;
-                    prodottiJPA.add(prodotto);
-                    break;
-                default:
-                    break;
+            ArrayList<NewProdotto> prodottiDTO = body.prodotti();
+            List<Prodotto> prodottiJPA = new ArrayList<>();
+            for (int i = 0; i < prodottiDTO.size(); i++) {
+                Prodotto prodotto;
+                switch (prodottiDTO.get(i).discriminatorString()) {
+                    case "GIN_BOTTLE":
+                        GinBottle newGinBottle = new GinBottle();
+                        newGinBottle.setName(prodottiDTO.get(i).name());
+                        newGinBottle.setUM(prodottiDTO.get(i).UM());
+                        newGinBottle.setBrand(ginBrandDAO.findByName(prodottiDTO.get(i).brandId()));
+                        newGinBottle.setProductionDate(prodottiDTO.get(i).productionDate());
+                        newGinBottle.setVolume(prodottiDTO.get(i).volume());
+                        newGinBottle.setCurrentVolume(prodottiDTO.get(i).volume());
+                        newGinBottle.setAlcoholPercentage(prodottiDTO.get(i).alcoholPercentage());
+                        newGinBottle.setExpirationDate(prodottiDTO.get(i).expirationDate());
+                        newGinBottle.setBatchNumber(prodottiDTO.get(i).batchNumber());
+                        newGinBottle.setImageUrl(prodottiDTO.get(i).imageUrl());
+                        newGinBottle.setGinFlavour(ginFlavourDAO.findByName(prodottiDTO.get(i).ginFlavourId()));
+                        prodotto = newGinBottle;
+                        prodottiJPA.add(prodotto);
+                        break;
+                    case "TONICA":
+                        Tonica newTonica = new Tonica();
+                        newTonica.setName(prodottiDTO.get(i).name());
+                        newTonica.setUM(prodottiDTO.get(i).UM());
+                        newTonica.setFlavour(flavourDAO.findByName(prodottiDTO.get(i).flavourId()));
+                        newTonica.setScadenza_tonica(prodottiDTO.get(i).scadenza_tonica());
+                        newTonica.setBrandTonica(brandTonicaDAO.findByName(prodottiDTO.get(i).brand_tonica_name()));
+                        prodotto = newTonica;
+                        prodottiJPA.add(prodotto);
+                        break;
+                    case "ALIMENTO_EXTRA":
+                        Extra newExtra = new Extra();
+                        newExtra.setName(prodottiDTO.get(i).name());
+                        newExtra.setFlavour(flavourDAO.findByName(prodottiDTO.get(i).flavourId()));
+                        newExtra.setScadenza_ingrediente(prodottiDTO.get(i).scadenza_ingrediente());
+                        newExtra.setUM(prodottiDTO.get(i).UM());
+                        newExtra.setQtaExtra(prodottiDTO.get(i).qtaExtra());
+                        prodotto = newExtra;
+                        prodottiJPA.add(prodotto);
+                        break;
+                    case "GUARNIZIONE":
+                        Guarnizione newGuarnizione = new Guarnizione();
+                        newGuarnizione.setName(prodottiDTO.get(i).name());
+                        newGuarnizione.setColore(coloreGuarnizioneDAO.findByName(prodottiDTO.get(i).coloreId()));
+                        newGuarnizione.setFlavour(flavourDAO.findByName(prodottiDTO.get(i).flavourId()));
+                        newGuarnizione.setUM(prodottiDTO.get(i).UM());
+                        newGuarnizione.setQuantitaGarnish(prodottiDTO.get(i).quantitaGarnish());
+                        prodotto = newGuarnizione;
+                        prodottiJPA.add(prodotto);
+                        break;
+                    default:
+                        break;
+                }
             }
-        }
 
-        for (int y = 0; y < prodottiJPA.size(); y++){
-            prodottiJPA.get(y).setCarico(carico);
-        }
+            for (int y = 0; y < prodottiJPA.size(); y++) {
+                prodottiJPA.get(y).setCarico(carico);
+            }
 
-        carico.setProdotti(prodottiJPA);
-        return ResponseEntity.ok(caricoDAO.save(carico));
+            carico.setProdotti(prodottiJPA);
+            return ResponseEntity.ok(caricoDAO.save(carico));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage() + "\n" + getStackTrace(e));
+        }
+    }
+
+    private String getStackTrace(Exception e) {
+        StringWriter sw = new StringWriter();
+        PrintWriter pw = new PrintWriter(sw);
+        e.printStackTrace(pw);
+        return sw.toString();
     }
 
 
