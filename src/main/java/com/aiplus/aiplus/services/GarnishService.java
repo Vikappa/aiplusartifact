@@ -22,7 +22,7 @@ public class GarnishService {
         List<Guarnizione> garnishes = garnishDAO.findAll();
 
         return ResponseEntity.ok(garnishes.stream()
-                .map(garnish -> new GarnishLineShort(garnish.getName(), garnish.getUM()))
+                .map(garnish -> new GarnishLineShort(garnish.getName(), garnish.getUM(), garnish.getColore(), garnish.getFlavour()))
                 .distinct()
                 .collect(Collectors.toList())) ;
     }

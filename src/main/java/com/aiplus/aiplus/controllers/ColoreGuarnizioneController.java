@@ -21,4 +21,6 @@ public class ColoreGuarnizioneController {
     public ResponseEntity<List<ColoreGuarnizione>> getAll() {
         return coloreGuarnizioneService.getAll();
     }
+
+
 }
