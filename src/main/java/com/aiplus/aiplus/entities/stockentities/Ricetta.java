@@ -1,6 +1,7 @@
 package com.aiplus.aiplus.entities.stockentities;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -15,7 +16,10 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 @Table(name = "ricette")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Ricetta {
+
+    private final int BASE_PRICE = 7; // €
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

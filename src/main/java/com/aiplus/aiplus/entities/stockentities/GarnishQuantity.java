@@ -34,4 +34,7 @@ public class GarnishQuantity {
     private GinTonic ginTonic;
 
     private int quantity;
+
+    private String UM;
+
 }
