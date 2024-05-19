@@ -1,12 +1,7 @@
 package com.aiplus.aiplus.payloads.DTO;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import java.util.List;
 
-@Getter
-@Setter
 public class RicettaDTO {
     private long id;
     private String name;
@@ -15,6 +10,7 @@ public class RicettaDTO {
     private List<ExtraQuantityDTO> extras;
     private List<GarnishQuantityDTO> garnishes;
     private boolean preparabile;
+    private int quantitaPreparabile;
 
     // Getters and Setters
 
@@ -72,5 +68,13 @@ public class RicettaDTO {
 
     public void setPreparabile(boolean preparabile) {
         this.preparabile = preparabile;
+    }
+
+    public int getQuantitaPreparabile() {
+        return quantitaPreparabile;
+    }
+
+    public void setQuantitaPreparabile(int quantitaPreparabile) {
+        this.quantitaPreparabile = quantitaPreparabile;
     }
 }

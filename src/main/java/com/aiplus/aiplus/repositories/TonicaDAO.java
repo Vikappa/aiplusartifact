@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface TonicaDAO extends JpaRepository<Tonica, Long> {
+    long countByFlavour(Flavour flavour);
     Tonica findFirstByFlavour(Flavour flavour);
 
 }

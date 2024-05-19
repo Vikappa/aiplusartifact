@@ -118,57 +118,47 @@ public class RicettaService {
                 garnish.getQuantity(),
                 garnish.getUM()
         )).collect(Collectors.toList()));
-        ricettaDTO.setPreparabile(isPreparabile(ricetta));
+        int quantitaPreparabile = calcolaQuantitaPreparabile(ricetta);
+        ricettaDTO.setPreparabile(quantitaPreparabile > 0);
+        ricettaDTO.setQuantitaPreparabile(quantitaPreparabile);
         return ricettaDTO;
     }
 
-    private boolean isPreparabile(Ricetta ricetta) {
-        // Controlla se c'è una bottiglia di gin con il gusto giusto e almeno 60 ml di volume rimanente
+    private int calcolaQuantitaPreparabile(Ricetta ricetta) {
+        // Trova la bottiglia di gin con il gusto giusto e calcola quante dosi possono essere preparate
         GinBottle ginBottle = ginBottleDAO.findFirstByGinFlavourAndCurrentVolumeGreaterThanEqual(ricetta.getGinFlavour(), 60);
         if (ginBottle == null) {
-            return false;
+            return 0;
+        }
+        int ginDosi = (int) (ginBottle.getCurrentVolume() / 60);
+
+        // Trova quante bottiglie di tonica sono disponibili
+        long tonicaCount = tonicaDAO.countByFlavour(ricetta.getTonica());
+        if (tonicaCount == 0) {
+            return 0;
         }
 
-        // Controlla se c'è una bottiglia di tonica
-        Tonica tonica = tonicaDAO.findFirstByFlavour(ricetta.getTonica());
-        if (tonica == null) {
-            return false;
-        }
-
-        // Controlla se ci sono gli extra richiesti
+        // Trova quante dosi di extra possono essere preparate
+        int extraDosi = Integer.MAX_VALUE;
         for (ExtraQuantity extra : ricetta.getExtras()) {
             Extra extraInMagazzino = extraDAO.findByNameAndUMAndQtaExtraGreaterThanEqual(extra.getExtra().getName(), extra.getUM(), extra.getQuantity());
             if (extraInMagazzino == null) {
-                return false;
+                return 0;
             }
+            extraDosi = Math.min(extraDosi, extraInMagazzino.getQtaExtra() / extra.getQuantity());
         }
 
-        // Controlla se ci sono le guarnizioni richieste
+        // Trova quante dosi di guarnizioni possono essere preparate
+        int garnishDosi = Integer.MAX_VALUE;
         for (GarnishQuantity garnish : ricetta.getGarnishes()) {
             Guarnizione garnishInMagazzino = garnishDAO.findByNameAndUMAndQuantitaGarnishGreaterThanEqual(garnish.getGuarnizione().getName(), garnish.getUM(), garnish.getQuantity());
             if (garnishInMagazzino == null) {
-                return false;
+                return 0;
             }
+            garnishDosi = Math.min(garnishDosi, garnishInMagazzino.getQuantitaGarnish() / garnish.getQuantity());
         }
 
-        // Se tutto è disponibile, consuma gli ingredienti
-        ginBottle.setCurrentVolume(ginBottle.getCurrentVolume() - 60);
-        ginBottleDAO.save(ginBottle);
-
-        tonicaDAO.delete(tonica);
-
-        for (ExtraQuantity extra : ricetta.getExtras()) {
-            Extra extraInMagazzino = extraDAO.findByNameAndUMAndQtaExtraGreaterThanEqual(extra.getExtra().getName(), extra.getUM(), extra.getQuantity());
-            extraInMagazzino.setQtaExtra(extraInMagazzino.getQtaExtra() - extra.getQuantity());
-            extraDAO.save(extraInMagazzino);
-        }
-
-        for (GarnishQuantity garnish : ricetta.getGarnishes()) {
-            Guarnizione garnishInMagazzino = garnishDAO.findByNameAndUMAndQuantitaGarnishGreaterThanEqual(garnish.getGuarnizione().getName(), garnish.getUM(), garnish.getQuantity());
-            garnishInMagazzino.setQuantitaGarnish(garnishInMagazzino.getQuantitaGarnish() - garnish.getQuantity());
-            garnishDAO.save(garnishInMagazzino);
-        }
-
-        return true;
+        // Restituisce il numero minimo di dosi che possono essere preparate
+        return Math.min(ginDosi, Math.min((int) tonicaCount, Math.min(extraDosi, garnishDosi)));
     }
 }
