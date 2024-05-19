@@ -19,8 +19,12 @@ public interface ProdottoDAO extends JpaRepository<Prodotto, Long> {
             "FROM GinBottle p GROUP BY p.name, p.UM, p.ginFlavour.name, p.expirationDate, p.brand.name, p.brand.imageUrl")
     List<GinBottleSummaryDTO> summarizeGinBottle();
 
-    @Query("SELECT p.name as name, p.UM as um, p.brandTonica.name as brand, COUNT(p) as totalQuantity " +
-            "FROM Tonica p GROUP BY p.name, p.UM, p.brandTonica.name")
+
+    @Query("SELECT p.name as name, p.UM as um, p.brandTonica.name as brand, p.flavour.name as flavour, COUNT(p) as totalQuantity " +
+            "FROM Tonica p " +
+            "LEFT JOIN p.brandTonica " +
+            "LEFT JOIN p.flavour " +
+            "GROUP BY p.name, p.UM, p.brandTonica.name, p.flavour.name")
     List<TonicaSummaryDTO> summarizeTonica();
 
     @Query("SELECT p.name as name, p.UM as um, p.flavour.name as flavour, SUM(p.qtaExtra) as totalQuantity " +
