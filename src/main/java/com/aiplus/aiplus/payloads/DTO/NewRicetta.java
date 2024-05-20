@@ -4,8 +4,8 @@ import java.util.List;
 
 public record NewRicetta(
         String name,
-        Long gin_flavour_id,
-        Long flavour_tonica_id,
+        String gin_flavour_id,
+        String flavour_tonica_id,
         List<ExtraQuantityDTO> extras,
         List<GarnishQuantityDTO> garnishes
 ) {}

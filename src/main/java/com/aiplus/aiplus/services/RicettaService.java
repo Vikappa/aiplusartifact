@@ -46,12 +46,10 @@ public class RicettaService {
 
     @Transactional
     public Ricetta createNewRicetta(NewRicetta newRicetta) {
-        logger.info("Creating new Ricetta with name: {}", newRicetta.name());
+        logger.info("Creo la ricetta:", newRicetta.name());
 
-        GinFlavour ginFlavour = ginFlavourDAO.findById(newRicetta.gin_flavour_id())
-                .orElseThrow(() -> new IllegalArgumentException("Invalid gin flavour ID: " + newRicetta.gin_flavour_id()));
-        Flavour tonica = flavourDAO.findById(newRicetta.flavour_tonica_id())
-                .orElseThrow(() -> new IllegalArgumentException("Invalid flavour ID: " + newRicetta.flavour_tonica_id()));
+        GinFlavour ginFlavour = ginFlavourDAO.findByName(newRicetta.gin_flavour_id());
+        Flavour tonica = flavourDAO.findByName(newRicetta.flavour_tonica_id());
 
         Ricetta ricetta = new Ricetta();
         ricetta.setName(newRicetta.name());
@@ -65,7 +63,7 @@ public class RicettaService {
         List<GarnishQuantity> garnishes = new ArrayList<>();
 
         for (ExtraQuantityDTO extraDTO : extrasDTO) {
-            Extra extra = extraDAO.findById(extraDTO.getExtraId())
+            Extra extra = extraDAO.findByNameAndUM(extraDTO.getExtraId(), extraDTO.getUM())
                     .orElseThrow(() -> {
                         logger.error("Invalid extra ID: {}", extraDTO.getExtraId());
                         return new IllegalArgumentException("Invalid extra ID: " + extraDTO.getExtraId());
@@ -79,7 +77,7 @@ public class RicettaService {
         }
 
         for (GarnishQuantityDTO garnishDTO : garnishesDTO) {
-            Guarnizione guarnizione = garnishDAO.findById(garnishDTO.getGuarnizioneId())
+            Guarnizione guarnizione = garnishDAO.findByNameAndUM(garnishDTO.getGuarnizioneId(), garnishDTO.getUM())
                     .orElseThrow(() -> {
                         logger.error("Invalid guarnizione ID: {}", garnishDTO.getGuarnizioneId());
                         return new IllegalArgumentException("Invalid guarnizione ID: " + garnishDTO.getGuarnizioneId());
@@ -107,13 +105,13 @@ public class RicettaService {
         ricettaDTO.setGinFlavourName(ricetta.getGinFlavour().getName());
         ricettaDTO.setTonicaName(ricetta.getTonica().getName());
         ricettaDTO.setExtras(ricetta.getExtras().stream().map(extra -> new ExtraQuantityDTO(
-                extra.getExtra().getId(),
+                extra.getExtra().getName(),
                 extra.getExtra().getName(),
                 extra.getQuantity(),
                 extra.getUM()
         )).collect(Collectors.toList()));
         ricettaDTO.setGarnishes(ricetta.getGarnishes().stream().map(garnish -> new GarnishQuantityDTO(
-                garnish.getGuarnizione().getId(),
+                garnish.getGuarnizione().getName(),
                 garnish.getGuarnizione().getName(),
                 garnish.getQuantity(),
                 garnish.getUM()

@@ -6,12 +6,12 @@ import lombok.Setter;
 @Getter
 @Setter
 public class GarnishQuantityDTO {
-    private long guarnizioneId;
+    private String guarnizioneId;
     private String guarnizioneName;
     private int quantity;
     private String UM;
 
-    public GarnishQuantityDTO(long guarnizioneId, String guarnizioneName, int quantity, String UM) {
+    public GarnishQuantityDTO(String guarnizioneId, String guarnizioneName, int quantity, String UM) {
         this.guarnizioneId = guarnizioneId;
         this.guarnizioneName = guarnizioneName;
         this.quantity = quantity;
