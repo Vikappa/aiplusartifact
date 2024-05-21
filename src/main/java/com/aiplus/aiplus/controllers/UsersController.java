@@ -4,7 +4,6 @@ import com.aiplus.aiplus.entities.users.User;
 import com.aiplus.aiplus.payloads.login.RegisterUserDTO;
 import com.aiplus.aiplus.security.JWTTools;
 import com.aiplus.aiplus.services.UserService;
-import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.aiplus.aiplus.repositories.UserDAO;
 import org.springframework.http.HttpStatus;
@@ -15,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/users")
@@ -59,13 +59,12 @@ public class UsersController {
     }
 
     @GetMapping("/profile")
-    public ResponseEntity<User> getUserProfile(@RequestHeader(value="Authorization") String token) {
+    public ResponseEntity<Optional<User>> getUserProfile(@RequestHeader(value="Authorization") String token) {
+        System.out.println(token);
         try {
+            String tokenClean = token.startsWith("Bearer ") ? token.substring(7) : token;
 
-            System.out.println(token);
-
-            User user = userService.getUserByToken(token);
-            System.out.println(user.toString());
+            Optional<User> user = userService.getUserByToken(tokenClean);
 
             return ResponseEntity.ok(user);
         } catch (Exception e) {

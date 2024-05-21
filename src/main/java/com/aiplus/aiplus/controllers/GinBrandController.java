@@ -7,6 +7,7 @@ import com.aiplus.aiplus.utility.ImageUploader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -23,12 +24,14 @@ public class GinBrandController {
     @Autowired
     private ImageUploader imageUploader;
 
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> addGinBrand(@RequestBody GinBrandDTO ginBrandDTO) {
         ginBrandService.createGinBrand(ginBrandDTO);
         return ResponseEntity.ok("Gin brand added successfully!");
     }
 
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     @PostMapping(path = "/uploadimage", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<String> addGinBrandWithFile(
             @RequestParam("name") String name,
@@ -60,6 +63,7 @@ public class GinBrandController {
         return ResponseEntity.ok(brand);
     }
 
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     @DeleteMapping("/{brandName}")
     public ResponseEntity<String> deleteBrandByName(@PathVariable String brandName) {
         ginBrandService.deleteBrandByName(brandName);

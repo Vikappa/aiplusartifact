@@ -5,6 +5,7 @@ import com.aiplus.aiplus.payloads.DTO.GinBottleDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import com.aiplus.aiplus.services.GinBottleService;
@@ -16,6 +17,7 @@ public class GinBottleController {
     @Autowired
     private GinBottleService ginBottleService;
 
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     @PostMapping("/add")
     public ResponseEntity<String> addGinBottle(@RequestBody GinBottleDTO ginBottleDto) {
         ginBottleService.addGinBottle(ginBottleDto);
@@ -32,6 +34,7 @@ public class GinBottleController {
         return ResponseEntity.status(HttpStatus.OK).body(ginBottleService.getAllGinBottles());
     }
 
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteGinBottle(@PathVariable("id") long id) {
         ginBottleService.deleteGinBottle(id);

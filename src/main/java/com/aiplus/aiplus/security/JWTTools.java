@@ -42,6 +42,10 @@ public class JWTTools {
 
     }
 
+    public String extractIdFromToken(String token){
+        return Jwts.parser().verifyWith(Keys.hmacShaKeyFor((secret.getBytes(StandardCharsets.UTF_8)))).build().parseSignedClaims(token).getPayload().getSubject();
+    }
+
     public UUID extractUserUUID(String token) {
         try {
             // Rimuovere il prefisso "Bearer " se presente

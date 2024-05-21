@@ -5,6 +5,7 @@ import com.aiplus.aiplus.payloads.DTO.NewTonicaBrand;
 import com.aiplus.aiplus.services.BrandTonicaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,6 +22,7 @@ public class TonicaBrandController {
         return brandTonicaService.getAll();
     }
 
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     @PostMapping("/add")
     public ResponseEntity<BrandTonica> addBrandTonica(@RequestBody NewTonicaBrand brandTonica) {
         return brandTonicaService.createBrandTonica(brandTonica);

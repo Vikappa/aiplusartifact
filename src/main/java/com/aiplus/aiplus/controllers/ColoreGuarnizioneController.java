@@ -5,6 +5,7 @@ import com.aiplus.aiplus.payloads.DTO.NewColor;
 import com.aiplus.aiplus.services.ColoreGuarnizioneService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,6 +22,7 @@ public class ColoreGuarnizioneController {
         return coloreGuarnizioneService.getAll();
     }
 
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     @PostMapping("/add")
     public ResponseEntity<ColoreGuarnizione> addColor(@RequestBody NewColor newcolor){
         return coloreGuarnizioneService.addColor(newcolor);
