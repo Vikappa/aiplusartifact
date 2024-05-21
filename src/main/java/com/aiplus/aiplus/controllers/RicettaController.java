@@ -25,7 +25,6 @@ public class RicettaController {
         return ResponseEntity.ok(createdRicetta);
     }
 
-    @PreAuthorize("hasAnyAuthority('ADMIN')")
     @GetMapping("/getall")
     public ResponseEntity<List<RicettaDTO>> getAllRicette() {
         List<RicettaDTO> ricette = ricettaService.getAll();

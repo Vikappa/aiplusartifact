@@ -25,6 +25,7 @@ public class JWTTools {
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis()+ 1000 * 60 * 60)) // Un ora di vita
                 .subject(String.valueOf(user.getId()))
+                .claim("role", user.getRole())
                 .signWith(Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8))) //Firma con algoritmo HMAC
                 .compact();
     }
@@ -79,11 +80,6 @@ public class JWTTools {
     public int extractTableNumber(String token) {
         String tokenClean = token.startsWith("Bearer ") ? token.substring(7) : token;
 
-        System.out.println(Jwts.parser()
-                .verifyWith(Keys.hmacShaKeyFor((secret.getBytes(StandardCharsets.UTF_8)))).build()
-                .parseClaimsJws(tokenClean)
-                .getBody()
-                .get("tableNumber", Integer.class));
         return Jwts.parser()
                  .verifyWith(Keys.hmacShaKeyFor((secret.getBytes(StandardCharsets.UTF_8)))).build()
                 .parseClaimsJws(tokenClean)
