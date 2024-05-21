@@ -2,6 +2,7 @@ package com.aiplus.aiplus.security;
 
 import com.aiplus.aiplus.entities.users.User;
 import com.aiplus.aiplus.exceptions.UnauthorizedException;
+import com.aiplus.aiplus.payloads.login.CustomerLoginDTO;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
@@ -28,9 +29,14 @@ public class JWTTools {
                 .compact();
     }
 
-    public String extractUsername(String token) {
-
-        return "";
+    public String createCustomerToken(CustomerLoginDTO customerLoginDto) {
+        return Jwts.builder()
+                .claim("role", "CUSTOMER")
+                .claim("tableNumber", customerLoginDto.tavNum())
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 15)) // 15 min di vita
+                .signWith(Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8))) //Firma con algoritmo HMAC
+                .compact();
     }
 
     public void verifyToken(String token){
@@ -43,7 +49,11 @@ public class JWTTools {
     }
 
     public String extractIdFromToken(String token){
-        return Jwts.parser().verifyWith(Keys.hmacShaKeyFor((secret.getBytes(StandardCharsets.UTF_8)))).build().parseSignedClaims(token).getPayload().getSubject();
+        return Jwts.parser().
+                verifyWith(Keys.hmacShaKeyFor((secret.getBytes(StandardCharsets.UTF_8)))).build()
+                .parseSignedClaims(token)
+                .getPayload()
+                .getSubject();
     }
 
     public UUID extractUserUUID(String token) {
@@ -66,4 +76,19 @@ public class JWTTools {
             throw new UnauthorizedException(e.toString());
         }
     }
+    public int extractTableNumber(String token) {
+        String tokenClean = token.startsWith("Bearer ") ? token.substring(7) : token;
+
+        System.out.println(Jwts.parser()
+                .verifyWith(Keys.hmacShaKeyFor((secret.getBytes(StandardCharsets.UTF_8)))).build()
+                .parseClaimsJws(tokenClean)
+                .getBody()
+                .get("tableNumber", Integer.class));
+        return Jwts.parser()
+                 .verifyWith(Keys.hmacShaKeyFor((secret.getBytes(StandardCharsets.UTF_8)))).build()
+                .parseClaimsJws(tokenClean)
+                .getBody()
+                .get("tableNumber", Integer.class);
+    }
+
 }

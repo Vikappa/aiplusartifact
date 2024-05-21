@@ -29,4 +29,6 @@ public class Ordine {
     @JsonManagedReference
     @OneToMany(mappedBy = "ordine", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<GinTonic> ginTonics;
+
+    private int nTavolo;
 }

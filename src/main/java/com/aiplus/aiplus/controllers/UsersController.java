@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.aiplus.aiplus.repositories.UserDAO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -34,12 +35,14 @@ public class UsersController {
     @Autowired
     private UserDAO userDAO;
 
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'BARMAN')")
     @GetMapping("/getall")
     public ResponseEntity<List<User>> getAllUsers() {
         List<User> users = userRepository.findAll();
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     @PostMapping
     public ResponseEntity<User> addUser(@RequestBody RegisterUserDTO body) {
         User user = new User();
