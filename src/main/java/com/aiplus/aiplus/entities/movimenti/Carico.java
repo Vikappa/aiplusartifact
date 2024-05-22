@@ -3,6 +3,7 @@ package com.aiplus.aiplus.entities.movimenti;
 import com.aiplus.aiplus.entities.stockentities.Prodotto;
 import com.aiplus.aiplus.entities.users.User;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
@@ -18,6 +19,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Carico {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

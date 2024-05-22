@@ -139,24 +139,83 @@ public class RicettaService {
         // Trova quante dosi di extra possono essere preparate
         int extraDosi = Integer.MAX_VALUE;
         for (ExtraQuantity extra : ricetta.getExtras()) {
-            Extra extraInMagazzino = extraDAO.findByNameAndUMAndQtaExtraGreaterThanEqual(extra.getExtra().getName(), extra.getUM(), extra.getQuantity());
+            // Prova a ottenere il primo risultato
+            Extra extraInMagazzino = extraDAO.findTop1ByNameAndUMAndQtaExtraGreaterThanEqual(
+                    extra.getExtra().getName(),
+                    extra.getUM(),
+                    extra.getQuantity()
+            );
+
             if (extraInMagazzino == null) {
-                return 0;
+                // Prova a ottenere tutti i risultati e sommare le quantità
+                List<Extra> allExtrasInMagazzino = extraDAO.findByNameAndUMAndQtaExtraGreaterThanEqual(
+                        extra.getExtra().getName(),
+                        extra.getUM(),
+                        1 // qualunque quantità maggiore di 0
+                );
+
+                int totalQuantity = 0;
+                for (Extra e : allExtrasInMagazzino) {
+                    totalQuantity += e.getQtaExtra();
+                    if (totalQuantity >= extra.getQuantity()) {
+                        break;
+                    }
+                }
+
+                // Se la somma totale è minore della quantità richiesta, non è possibile soddisfare la richiesta
+                if (totalQuantity < extra.getQuantity()) {
+                    return 0;
+                }
+
+                // Calcola il numero di dosi che possono essere fatte con la quantità totale trovata
+                extraDosi = Math.min(extraDosi, totalQuantity / extra.getQuantity());
+            } else {
+                // Se esiste un risultato che soddisfa la condizione, calcola le dosi normalmente
+                extraDosi = Math.min(extraDosi, extraInMagazzino.getQtaExtra() / extra.getQuantity());
             }
-            extraDosi = Math.min(extraDosi, extraInMagazzino.getQtaExtra() / extra.getQuantity());
         }
 
         // Trova quante dosi di guarnizioni possono essere preparate
         int garnishDosi = Integer.MAX_VALUE;
         for (GarnishQuantity garnish : ricetta.getGarnishes()) {
-            Guarnizione garnishInMagazzino = garnishDAO.findByNameAndUMAndQuantitaGarnishGreaterThanEqual(garnish.getGuarnizione().getName(), garnish.getUM(), garnish.getQuantity());
+            // Prova a ottenere il primo risultato
+            Guarnizione garnishInMagazzino = garnishDAO.findTop1ByNameAndUMAndQuantitaGarnishGreaterThanEqual(
+                    garnish.getGuarnizione().getName(),
+                    garnish.getUM(),
+                    garnish.getQuantity()
+            );
+
             if (garnishInMagazzino == null) {
-                return 0;
+                // Prova a ottenere tutti i risultati e sommare le quantità
+                List<Guarnizione> allGarnishesInMagazzino = garnishDAO.findByNameAndUMAndQuantitaGarnishGreaterThanEqual(
+                        garnish.getGuarnizione().getName(),
+                        garnish.getUM(),
+                        1 // qualunque quantità maggiore di 0
+                );
+
+                int totalQuantity = 0;
+                for (Guarnizione g : allGarnishesInMagazzino) {
+                    totalQuantity += g.getQuantitaGarnish();
+                    if (totalQuantity >= garnish.getQuantity()) {
+                        break;
+                    }
+                }
+
+                // Se la somma totale è minore della quantità richiesta, non è possibile soddisfare la richiesta
+                if (totalQuantity < garnish.getQuantity()) {
+                    return 0;
+                }
+
+                // Calcola il numero di dosi che possono essere fatte con la quantità totale trovata
+                garnishDosi = Math.min(garnishDosi, totalQuantity / garnish.getQuantity());
+            } else {
+                // Se esiste un risultato che soddisfa la condizione, calcola le dosi normalmente
+                garnishDosi = Math.min(garnishDosi, garnishInMagazzino.getQuantitaGarnish() / garnish.getQuantity());
             }
-            garnishDosi = Math.min(garnishDosi, garnishInMagazzino.getQuantitaGarnish() / garnish.getQuantity());
         }
 
         // Restituisce il numero minimo di dosi che possono essere preparate
         return Math.min(ginDosi, Math.min((int) tonicaCount, Math.min(extraDosi, garnishDosi)));
     }
+
 }

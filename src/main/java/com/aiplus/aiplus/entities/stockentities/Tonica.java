@@ -1,6 +1,7 @@
 package com.aiplus.aiplus.entities.stockentities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -16,6 +17,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @Entity
 @DiscriminatorValue("TONICA")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Tonica extends Prodotto {
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -30,4 +32,7 @@ public class Tonica extends Prodotto {
     @JoinColumn(name = "brand_tonica_name")
     private BrandTonica brandTonica;
 
+    @OneToOne(mappedBy = "tonica", fetch = FetchType.LAZY)
+    @JsonBackReference
+    private GinTonic ginTonic;
 }

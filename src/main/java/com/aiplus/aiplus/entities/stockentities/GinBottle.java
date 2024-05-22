@@ -1,8 +1,17 @@
 package com.aiplus.aiplus.entities.stockentities;
 
+import com.aiplus.aiplus.entities.stockentities.GinBrand;
+import com.aiplus.aiplus.entities.stockentities.GinFlavour;
+import com.aiplus.aiplus.entities.stockentities.GinTonic;
+import com.aiplus.aiplus.entities.stockentities.Prodotto;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
+
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @DiscriminatorValue("GIN_BOTTLE")
@@ -10,6 +19,7 @@ import java.time.LocalDate;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class GinBottle extends Prodotto {
 
     @ManyToOne
@@ -41,4 +51,7 @@ public class GinBottle extends Prodotto {
     @JoinColumn(name = "gin_flavour_id")
     private GinFlavour ginFlavour;
 
+    @OneToMany(mappedBy = "ginBottle", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonBackReference
+    private List<GinTonic> ginTonics;
 }

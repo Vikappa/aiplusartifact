@@ -1,6 +1,7 @@
 package com.aiplus.aiplus.entities.stockentities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -16,6 +17,7 @@ import java.util.List;
 @NoArgsConstructor
 @Table(name = "brand_tonica")
 @Entity
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class BrandTonica {
 
     @Id

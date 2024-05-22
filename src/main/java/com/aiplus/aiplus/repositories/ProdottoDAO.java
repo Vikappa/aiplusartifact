@@ -26,6 +26,7 @@ public interface ProdottoDAO extends JpaRepository<Prodotto, Long> {
             "FROM Tonica p " +
             "LEFT JOIN p.brandTonica " +
             "LEFT JOIN p.flavour " +
+            "WHERE p.ginTonic IS NULL " +
             "GROUP BY p.name, p.UM, p.brandTonica.name, p.flavour.name")
     List<TonicaSummaryDTO> summarizeTonica();
 
