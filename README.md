@@ -17,12 +17,7 @@ Spring Security: Implementazione di un sistema robusto di autenticazione e autor
 @MethodSecurity: Utilizzo di annotazioni per gestire l'autorizzazione a livello di metodo, assicurando che solo gli utenti autorizzati possano eseguire determinate azioni.
 Database PostgreSQL: Scelta di PostgreSQL come database relazionale per la sua affidabilità e le sue performance eccellenti, con una struttura dati ottimizzata per le esigenze del progetto.
 Hibernate: Implementazione di Hibernate per la gestione della persistenza dei dati, facilitando le operazioni CRUD e la gestione delle relazioni tra le entità del database.
-Technologies Used
-Java Spring: Framework principale utilizzato per costruire il server gestionale, offrendo un'ampia gamma di funzionalità per la creazione di applicazioni robuste e scalabili.
-Spring Security: Modulo di Spring utilizzato per implementare l'autenticazione e l'autorizzazione, proteggendo l'accesso alle risorse del sistema.
-@MethodSecurity: Strumento di Spring Security che permette di applicare regole di autorizzazione a livello di metodo, aumentando la granularità del controllo degli accessi.
-PostgreSQL: Sistema di gestione di database relazionali scelto per memorizzare i dati, garantendo integrità e prestazioni elevate.
-Hibernate: Framework di mapping object-relational (ORM) utilizzato per la persistenza dei dati in Java, facilitando la gestione delle operazioni sul database tramite JPA.
+
 <p align="center">
   <img src="https://img.shields.io/badge/Java_Spring-6DB33F?style=for-the-badge&logo=spring&logoColor=white" alt="Java Spring"/>
   <img src="https://img.shields.io/badge/Spring_Security-6DB33F?style=for-the-badge&logo=spring&logoColor=white" alt="Spring Security"/>
