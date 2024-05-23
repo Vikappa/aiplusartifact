@@ -46,6 +46,7 @@ public class RicettaService {
 
     @Transactional
     public Ricetta createNewRicetta(NewRicetta newRicetta) {
+        logger.info(newRicetta.name());
         logger.info("Creo la ricetta:", newRicetta.name());
 
         GinFlavour ginFlavour = ginFlavourDAO.findByName(newRicetta.gin_flavour_id());
@@ -55,6 +56,10 @@ public class RicettaService {
         ricetta.setName(newRicetta.name());
         ricetta.setGinFlavour(ginFlavour);
         ricetta.setTonica(tonica);
+
+        logger.info(newRicetta.gin_flavour_id());
+        logger.info(newRicetta.flavour_tonica_id());
+
 
         List<ExtraQuantityDTO> extrasDTO = newRicetta.extras();
         List<GarnishQuantityDTO> garnishesDTO = newRicetta.garnishes();

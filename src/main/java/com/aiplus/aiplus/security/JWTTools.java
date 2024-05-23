@@ -23,7 +23,7 @@ public class JWTTools {
     public String createToken(User user){
         return Jwts.builder()
                 .issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(new Date(System.currentTimeMillis()+ 1000 * 60 * 60)) // Un ora di vita
+                .expiration(new Date(System.currentTimeMillis()+ 1000 * 60 * 60 * 8)) // 8 ore di vita
                 .subject(String.valueOf(user.getId()))
                 .claim("role", user.getRole())
                 .signWith(Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8))) //Firma con algoritmo HMAC

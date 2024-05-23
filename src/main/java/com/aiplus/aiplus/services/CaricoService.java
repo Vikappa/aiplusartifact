@@ -44,14 +44,12 @@ public class CaricoService {
     public ResponseEntity<List<Carico>> getAllCarichi() {
             List<Carico> carichi = caricoDAO.findAll();
             for (Carico carico : carichi) {
-                // Accesso alla lista di prodotti per forzarne il caricamento
-                carico.getProdotti().size(); // Forza Hibernate a inizializzare la collezione
+                carico.getProdotti().size();
 
                 for (Prodotto prodotto : carico.getProdotti()) {
-                    // Forza il caricamento di altre proprietà lazy se necessario
-                    // Esempio: Accesso a collezioni o entità ulteriormente lazy-loaded dentro Prodotto
+
                     if (prodotto instanceof GinBottle) {
-                        ((GinBottle) prodotto).getBrand().getName(); // Assumendo che brand sia lazy-loaded
+                        ((GinBottle) prodotto).getBrand().getName();
                     }
                 }
             }
