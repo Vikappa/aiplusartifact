@@ -4,7 +4,7 @@ import com.aiplus.aiplus.entities.stockentities.GinBottle;
 import com.aiplus.aiplus.entities.stockentities.GinBrand;
 import com.aiplus.aiplus.entities.stockentities.GinFlavour;
 import com.aiplus.aiplus.payloads.DTO.GinBottleDTO;
-import com.aiplus.aiplus.payloads.DTO.GinBottleSummary;
+import com.aiplus.aiplus.payloads.DTO.GinBottleLineShort;
 import com.aiplus.aiplus.repositories.GinBottleDAO;
 import com.aiplus.aiplus.repositories.GinBrandDAO;
 import com.aiplus.aiplus.repositories.GinFlavourDAO;
@@ -87,12 +87,12 @@ public class GinBottleService {
         ginBottleDAO.deleteById(id);
     }
 
-    public ResponseEntity<List<GinBottleSummary>> getInStoreList(){
+    public ResponseEntity<List<GinBottleLineShort>> getInStoreList(){
         List<Object[]> queryResponse = ginBottleDAO.findGinBottlesGroupedByBrandAndFlavourAndName();
 
 
-        List<GinBottleSummary> ritorno = queryResponse.stream()
-                .map(queryResponseLine -> new GinBottleSummary(
+        List<GinBottleLineShort> ritorno = queryResponse.stream()
+                .map(queryResponseLine -> new GinBottleLineShort(
                         (String) queryResponseLine[2],       // ginName
                         (String) queryResponseLine[1],       // ginFlavourName
                         (Double) queryResponseLine[5],       // ginBrandSurcharge

@@ -2,7 +2,7 @@ package com.aiplus.aiplus.controllers;
 
 import com.aiplus.aiplus.entities.stockentities.GinBottle;
 import com.aiplus.aiplus.payloads.DTO.GinBottleDTO;
-import com.aiplus.aiplus.payloads.DTO.GinBottleSummary;
+import com.aiplus.aiplus.payloads.DTO.GinBottleLineShort;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -45,7 +45,7 @@ public class GinBottleController {
     }
 
     @GetMapping("/getinstorelist")
-    public ResponseEntity<List<GinBottleSummary>> getInStoreList(){
+    public ResponseEntity<List<GinBottleLineShort>> getInStoreList(){
         return ginBottleService.getInStoreList();
     }
 

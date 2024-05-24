@@ -1,12 +1,12 @@
 package com.aiplus.aiplus.security;
 
 import com.aiplus.aiplus.entities.users.User;
+import com.aiplus.aiplus.exceptions.InvalidTokenException;
 import com.aiplus.aiplus.exceptions.UnauthorizedException;
 import com.aiplus.aiplus.payloads.login.CustomerLoginDTO;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jws;
-import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
+import io.jsonwebtoken.security.SignatureException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -43,10 +43,13 @@ public class JWTTools {
     public void verifyToken(String token){
         try {
         Jwts.parser().verifyWith(Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8))).build().parse(token);
-        } catch (Exception e){
-            throw new UnauthorizedException("Invalid token");
+        } catch (ExpiredJwtException e) {
+            throw new InvalidTokenException("Expired token", 511);
+        } catch (SignatureException | MalformedJwtException e) {
+            throw new InvalidTokenException("Invalid token", 512);
+        } catch (Exception e) {
+            throw new InvalidTokenException("Token verification failed", 513);
         }
-
     }
 
     public String extractIdFromToken(String token){
@@ -59,7 +62,7 @@ public class JWTTools {
 
     public UUID extractUserUUID(String token) {
         try {
-            // Rimuovere il prefisso "Bearer " se presente
+            // Rimuove il prefisso "Bearer " se presente
             String tokenClean = token.startsWith("Bearer ") ? token.substring(7) : token;
 
             byte[] keyBytes = secret.getBytes(StandardCharsets.UTF_8);

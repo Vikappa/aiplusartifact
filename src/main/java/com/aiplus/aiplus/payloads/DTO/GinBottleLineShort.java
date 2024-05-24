@@ -1,6 +1,6 @@
 package com.aiplus.aiplus.payloads.DTO;
 
-public record GinBottleSummary(
+public record GinBottleLineShort(
         String name,
         String ginFlavourName,
         double ginBrandSurcharge,
