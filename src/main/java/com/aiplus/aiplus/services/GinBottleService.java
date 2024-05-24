@@ -4,6 +4,7 @@ import com.aiplus.aiplus.entities.stockentities.GinBottle;
 import com.aiplus.aiplus.entities.stockentities.GinBrand;
 import com.aiplus.aiplus.entities.stockentities.GinFlavour;
 import com.aiplus.aiplus.payloads.DTO.GinBottleDTO;
+import com.aiplus.aiplus.payloads.DTO.GinBottleSummary;
 import com.aiplus.aiplus.repositories.GinBottleDAO;
 import com.aiplus.aiplus.repositories.GinBrandDAO;
 import com.aiplus.aiplus.repositories.GinFlavourDAO;
@@ -11,10 +12,13 @@ import jakarta.persistence.EntityNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class GinBottleService {
@@ -81,6 +85,23 @@ public class GinBottleService {
 
     public void deleteGinBottle(long id) {
         ginBottleDAO.deleteById(id);
+    }
+
+    public ResponseEntity<List<GinBottleSummary>> getInStoreList(){
+        List<Object[]> queryResponse = ginBottleDAO.findGinBottlesGroupedByBrandAndFlavourAndName();
+
+
+        List<GinBottleSummary> ritorno = queryResponse.stream()
+                .map(queryResponseLine -> new GinBottleSummary(
+                        (String) queryResponseLine[2],       // ginName
+                        (String) queryResponseLine[1],       // ginFlavourName
+                        (Double) queryResponseLine[5],       // ginBrandSurcharge
+                        (String) queryResponseLine[0]        // ginBrandName
+                ))
+                .collect(Collectors.toList());
+
+
+        return ResponseEntity.ok().body(ritorno);
     }
 }
 

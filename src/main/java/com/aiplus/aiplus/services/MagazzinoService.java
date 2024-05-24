@@ -36,6 +36,8 @@ public class MagazzinoService {
         return prodottoDAO.summarizeGarnish();
     }
 
+
+
     public ResponseEntity<List<Object>> getResume() {
         List<Object> summary = new ArrayList<>();
         summary.addAll(getGinBottleSummary());

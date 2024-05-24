@@ -23,8 +23,6 @@ public record NewGinTonic(
 
         List<NewExtraQuantity> extras,
 
-        List<NewGarnishQuantity> garnishes,
-
-        Double totalPrice
+        List<NewGarnishQuantity> garnishes
 ) {
 }
