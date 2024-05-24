@@ -18,11 +18,6 @@ public interface GinBottleDAO extends JpaRepository<GinBottle, Long> {
             "GROUP BY g.brand.name, g.ginFlavour.name, g.name, g.brand.sovrapprezzo")
     List<Object[]> findGinBottlesGroupedByBrandAndFlavourAndName();
 
-    Optional<GinBottle> findByNameAndGinFlavour_NameAndBrand_NameAndCurrentVolumeGreaterThanEqual(
-            String name,
-            String ginFlavourName,
-            String brandName,
-            double currentVolume
-    );
+    List<GinBottle> findByNameAndGinFlavour_NameAndBrand_NameAndCurrentVolumeGreaterThanEqual(String name, String ginFlavourName, String brandName, double currentVolume);
 
 }

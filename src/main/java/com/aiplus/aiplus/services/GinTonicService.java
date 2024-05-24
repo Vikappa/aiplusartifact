@@ -56,19 +56,19 @@ public class GinTonicService {
         boolean tonicaBottleGot = false;
 
         // Cerca una bottiglia di gin idonea
-        Optional<GinBottle> eligibleGinBottle = ginBottleDAO.findByNameAndGinFlavour_NameAndBrand_NameAndCurrentVolumeGreaterThanEqual(
+        List<GinBottle> eligibleGinBottles = ginBottleDAO.findByNameAndGinFlavour_NameAndBrand_NameAndCurrentVolumeGreaterThanEqual(
                 body.ginBottleName(),
                 body.ginFlavourName(),
                 body.ginBottleBrandName(),
                 60
         );
 
-        if (eligibleGinBottle.isPresent()) {
+        if (!eligibleGinBottles.isEmpty()) {
             ginBottleGot = true;
-            ginBottle = eligibleGinBottle.get();
-            ginBottle.getGinTonics().add(newGinTonic);
-            newGinTonic.setGinBottle(ginBottle);
+            ginBottle = eligibleGinBottles.get(0); // Seleziona la prima bottiglia disponibile
             ginBottle.setCurrentVolume(ginBottle.getCurrentVolume() - 60);
+            ginBottle.getGinTonics().add(newGinTonic); // Aggiungi il nuovo gin tonic alla lista esistente
+            newGinTonic.setGinBottle(ginBottle);
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Gin non trovato");
         }

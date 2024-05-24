@@ -10,7 +10,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -28,8 +27,9 @@ public class GinTonic {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ordine_id")
+    @JsonBackReference
     private Ordine ordine;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -53,4 +53,6 @@ public class GinTonic {
     private List<GarnishQuantity> garnishes;
 
     private int finalPrice;
+
+
 }

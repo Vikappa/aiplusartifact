@@ -15,5 +15,4 @@ public interface ExtraDAO extends JpaRepository<Extra, Long> {
 
     Extra findTop1ByNameAndUMAndQtaExtraGreaterThanEqual(String name, String UM, int qtaExtra);
 
-
 }
