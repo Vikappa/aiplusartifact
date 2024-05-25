@@ -7,11 +7,13 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 public interface GinBottleDAO extends JpaRepository<GinBottle, Long> {
     GinBottle findFirstByGinFlavourAndCurrentVolumeGreaterThanEqual(GinFlavour ginFlavour, double currentVolume);
+
+    @Query("SELECT SUM(g.currentVolume) FROM GinBottle g WHERE g.ginFlavour = :ginFlavour")
+    Double sumCurrentVolumeByGinFlavour(GinFlavour ginFlavour);
 
     @Query("SELECT g.brand.name AS brandName, g.ginFlavour.name AS flavourName, g.name AS ginName, SUM(g.currentVolume) AS totalVolume, COUNT(g) AS count, g.brand.sovrapprezzo AS sovrapprezzo " +
             "FROM GinBottle g " +
@@ -19,5 +21,4 @@ public interface GinBottleDAO extends JpaRepository<GinBottle, Long> {
     List<Object[]> findGinBottlesGroupedByBrandAndFlavourAndName();
 
     List<GinBottle> findByNameAndGinFlavour_NameAndBrand_NameAndCurrentVolumeGreaterThanEqual(String name, String ginFlavourName, String brandName, double currentVolume);
-
 }

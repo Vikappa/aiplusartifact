@@ -38,6 +38,7 @@ public class GinTonic {
 
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "tonica_id")
+    @JsonManagedReference
     private Tonica tonica;
 
     private String name;

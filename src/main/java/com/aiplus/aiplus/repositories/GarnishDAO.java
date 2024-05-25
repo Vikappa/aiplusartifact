@@ -1,7 +1,10 @@
 package com.aiplus.aiplus.repositories;
 
 import com.aiplus.aiplus.entities.stockentities.Guarnizione;
+import com.aiplus.aiplus.payloads.records.GarnishAvailabilityDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 import java.util.Optional;
@@ -9,8 +12,14 @@ import java.util.Optional;
 public interface GarnishDAO extends JpaRepository<Guarnizione, Long> {
     List<Guarnizione> findByNameAndUMAndQuantitaGarnishGreaterThanEqual(String name, String UM, int quantitaGarnish);
 
-    Optional<Guarnizione> findByNameAndUM(String name, String UM);
+    @Query("SELECT g FROM Guarnizione g WHERE g.name = :name AND g.UM = :um")
+    Optional<Guarnizione> findByNameAndUM(@Param("name") String name, @Param("um") String um);
 
     Guarnizione findTop1ByNameAndUMAndQuantitaGarnishGreaterThanEqual(String name, String UM, int quantitaGarnish);
+
+    @Query("SELECT new com.aiplus.aiplus.payloads.records.GarnishAvailabilityDTO(g, (g.quantitaGarnish - COALESCE((SELECT SUM(gq.quantity) FROM GarnishQuantity gq WHERE gq.guarnizione.id = g.id), 0))) " +
+            "FROM Guarnizione g " +
+            "WHERE g.name = :name AND g.UM = :um AND (g.quantitaGarnish - COALESCE((SELECT SUM(gq.quantity) FROM GarnishQuantity gq WHERE gq.guarnizione.id = g.id), 0)) >= :requiredQuantity")
+    List<GarnishAvailabilityDTO> findAvailableGarnishes(@Param("name") String name, @Param("um") String um, @Param("requiredQuantity") int requiredQuantity);
 
 }

@@ -31,9 +31,12 @@ public class CaricoController {
 
     @PreAuthorize("hasAnyAuthority('ADMIN')")
     @PostMapping
-    public ResponseEntity<?> addCarico(@RequestBody NewCarico body) {
-        System.out.println("Received request: " + body);
-        return caricoService.addCarico(body);
+    public ResponseEntity<?> addCarico(@RequestBody NewCarico body, @RequestHeader("Authorization") String authHeader) {
+        String token = authHeader;
+        if (token.startsWith("Bearer ")) {
+            token = token.substring(7);
+        }
+        return caricoService.addCarico(body, token);
     }
 
 

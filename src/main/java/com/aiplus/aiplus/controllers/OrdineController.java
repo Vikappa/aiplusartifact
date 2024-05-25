@@ -30,7 +30,6 @@ public class OrdineController {
         return ordineService.creaOrdine(tavolo,body);
     }
 
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'BARMAN')")
     @GetMapping("/getall")
     public ResponseEntity<List<Ordine>> getAll(){
 
