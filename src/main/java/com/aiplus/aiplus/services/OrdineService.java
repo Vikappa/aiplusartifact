@@ -197,9 +197,11 @@ public class OrdineService {
 
             // Salva le quantita' di extra e garnish
             for (ExtraQuantity extraQuantity : elegibleExtras) {
+                extraQuantity.setGinTonic(newGinTonic);
                 extraQuantityDAO.save(extraQuantity);
             }
             for (GarnishQuantity garnishQuantity : elegibleGarnishes) {
+                garnishQuantity.setGinTonic(newGinTonic);
                 garnishQuantityDAO.save(garnishQuantity);
             }
 

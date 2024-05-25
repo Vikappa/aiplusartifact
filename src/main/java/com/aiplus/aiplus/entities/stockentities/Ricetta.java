@@ -27,11 +27,11 @@ public class Ricetta {
 
     private String name;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "gin_flavour_id")
     private GinFlavour ginFlavour;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "flavour_tonica_id")
     private Flavour tonica;
 

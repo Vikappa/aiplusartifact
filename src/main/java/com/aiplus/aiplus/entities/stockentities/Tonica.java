@@ -20,7 +20,7 @@ import java.time.LocalDate;
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Tonica extends Prodotto {
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "flavour_id")
     private Flavour flavour;
 
@@ -28,11 +28,11 @@ public class Tonica extends Prodotto {
     private LocalDate scadenza_tonica;
 
     @JsonManagedReference
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "brand_tonica_name")
     private BrandTonica brandTonica;
 
-    @OneToOne(mappedBy = "tonica", fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "tonica", fetch = FetchType.EAGER)
     @JsonBackReference
     private GinTonic ginTonic;
 }
