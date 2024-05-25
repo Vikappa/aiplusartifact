@@ -33,7 +33,8 @@ public class OrdineController {
     @PreAuthorize("hasAnyAuthority('ADMIN', 'BARMAN')")
     @GetMapping("/getall")
     public ResponseEntity<List<Ordine>> getAll(){
-        return ordineService.getAll();
+
+        return ResponseEntity.ok().body(ordineService.getAll());
     }
 
 }

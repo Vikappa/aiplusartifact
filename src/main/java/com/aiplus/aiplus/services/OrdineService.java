@@ -8,6 +8,7 @@ import com.aiplus.aiplus.payloads.DTO.NewExtraQuantity;
 import com.aiplus.aiplus.payloads.DTO.NewGarnishQuantity;
 import com.aiplus.aiplus.payloads.DTO.NewOrdine;
 import com.aiplus.aiplus.repositories.*;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -159,7 +160,19 @@ public class OrdineService {
     }
 
 
-    public ResponseEntity<List<Ordine>> getAll() {
-        return ResponseEntity.ok().body(ordineDAO.findAll());
+
+    @Transactional
+    public List<Ordine> getAll() {
+        List<Ordine> ordini = ordineDAO.findAll();
+        for (Ordine ordine : ordini) {
+            GinTonic ginTonic = ordine.getGinTonic();
+            if (ginTonic != null) {
+                ginTonic.getGinBottle(); // Inizializza il ginBottle
+                ginTonic.getTonica(); // Inizializza il tonica
+                ginTonic.getExtras().size(); // Inizializza la lista di extras
+                ginTonic.getGarnishes().size(); // Inizializza la lista di garnishes
+            }
+        }
+        return ordini;
     }
 }

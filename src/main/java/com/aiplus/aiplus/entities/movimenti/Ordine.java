@@ -1,7 +1,7 @@
 package com.aiplus.aiplus.entities.movimenti;
 
 import com.aiplus.aiplus.entities.stockentities.GinTonic;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -21,7 +21,7 @@ public class Ordine {
     private long id;
 
     @OneToOne(mappedBy = "ordine", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference
+    @JsonBackReference
     private GinTonic ginTonic;
 
     private int nTavolo;
@@ -29,5 +29,3 @@ public class Ordine {
     @Enumerated(EnumType.STRING)
     private ORDER_STATUS status;
 }
-
-

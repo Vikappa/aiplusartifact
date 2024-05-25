@@ -27,19 +27,17 @@ public class GinTonic {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "ordine_id")
     @JsonBackReference
     private Ordine ordine;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "gin_bottle_id")
-    @JsonManagedReference
     private GinBottle ginBottle;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "tonica_id")
-    @JsonManagedReference
     private Tonica tonica;
 
     private String name;
@@ -53,6 +51,4 @@ public class GinTonic {
     private List<GarnishQuantity> garnishes;
 
     private int finalPrice;
-
-
 }
