@@ -1,7 +1,10 @@
 package com.aiplus.aiplus.services;
 
 import com.aiplus.aiplus.entities.stockentities.*;
-import com.aiplus.aiplus.payloads.DTO.*;
+import com.aiplus.aiplus.payloads.DTO.ExtraQuantityDTO;
+import com.aiplus.aiplus.payloads.DTO.GarnishQuantityDTO;
+import com.aiplus.aiplus.payloads.DTO.NewRicetta;
+import com.aiplus.aiplus.payloads.DTO.RicettaDTO;
 import com.aiplus.aiplus.repositories.*;
 import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
@@ -11,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -60,7 +64,6 @@ public class RicettaService {
         logger.info(newRicetta.gin_flavour_id());
         logger.info(newRicetta.flavour_tonica_id());
 
-
         List<ExtraQuantityDTO> extrasDTO = newRicetta.extras();
         List<GarnishQuantityDTO> garnishesDTO = newRicetta.garnishes();
 
@@ -68,11 +71,12 @@ public class RicettaService {
         List<GarnishQuantity> garnishes = new ArrayList<>();
 
         for (ExtraQuantityDTO extraDTO : extrasDTO) {
-            Extra extra = extraDAO.findByNameAndUM(extraDTO.getExtraId(), extraDTO.getUM())
-                    .orElseThrow(() -> {
-                        logger.error("Invalid extra ID: {}", extraDTO.getExtraId());
-                        return new IllegalArgumentException("Invalid extra ID: " + extraDTO.getExtraId());
-                    });
+            List<Extra> extraList = extraDAO.findByNameAndUM(extraDTO.getExtraId(), extraDTO.getUM());
+            if (extraList.isEmpty()) {
+                logger.error("Invalid extra ID: {}", extraDTO.getExtraId());
+                throw new IllegalArgumentException("Invalid extra ID: " + extraDTO.getExtraId());
+            }
+            Extra extra = extraList.get(0); // Prendi il primo elemento dalla lista
             ExtraQuantity newExtra = new ExtraQuantity();
             newExtra.setExtra(extra);
             newExtra.setRicetta(ricetta);
@@ -82,11 +86,12 @@ public class RicettaService {
         }
 
         for (GarnishQuantityDTO garnishDTO : garnishesDTO) {
-            Guarnizione guarnizione = garnishDAO.findByNameAndUM(garnishDTO.getGuarnizioneId(), garnishDTO.getUM())
-                    .orElseThrow(() -> {
-                        logger.error("Invalid guarnizione ID: {}", garnishDTO.getGuarnizioneId());
-                        return new IllegalArgumentException("Invalid guarnizione ID: " + garnishDTO.getGuarnizioneId());
-                    });
+            Optional<Guarnizione> guarnizioneOpt = garnishDAO.findByNameAndUM(garnishDTO.getGuarnizioneId(), garnishDTO.getUM());
+            if (!guarnizioneOpt.isPresent()) {
+                logger.error("Invalid guarnizione ID: {}", garnishDTO.getGuarnizioneId());
+                throw new IllegalArgumentException("Invalid guarnizione ID: " + garnishDTO.getGuarnizioneId());
+            }
+            Guarnizione guarnizione = guarnizioneOpt.get();
             GarnishQuantity newGarnish = new GarnishQuantity();
             newGarnish.setGuarnizione(guarnizione);
             newGarnish.setRicetta(ricetta);
@@ -196,5 +201,4 @@ public class RicettaService {
         // Restituisce il numero minimo di dosi che possono essere preparate
         return Math.min(ginDosi, Math.min((int) tonicaCount, Math.min(extraDosi, garnishDosi)));
     }
-
 }

@@ -1,26 +1,18 @@
 package com.aiplus.aiplus.payloads.records;
-import com.aiplus.aiplus.entities.stockentities.Extra;
-import com.aiplus.aiplus.entities.stockentities.Extra;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class ExtraAvailabilityDTO {
-    private Extra extra;
+
     private int availableQuantity;
 
-    public ExtraAvailabilityDTO(Extra extra, int availableQuantity) {
-        this.extra = extra;
-        this.availableQuantity = availableQuantity;
-    }
+    private long idReference;
 
-    public Extra getExtra() {
-        return extra;
-    }
-
-    public int getAvailableQuantity() {
-        return availableQuantity;
-    }
-
-    public void setAvailableQuantity(int availableQuantity) {
-        this.availableQuantity = availableQuantity;
-    }
 }
-

@@ -5,6 +5,7 @@ public interface ExtraSummaryDTO {
     String getUm();
     String getFlavour();
     Long getTotalQuantity();
+
     default String getDiscriminatorType() {
         return "ALIMENTO_EXTRA";
     }

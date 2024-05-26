@@ -1,25 +1,18 @@
 package com.aiplus.aiplus.payloads.records;
-import com.aiplus.aiplus.entities.stockentities.Guarnizione;
 
+import com.aiplus.aiplus.entities.stockentities.Guarnizione;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class GarnishAvailabilityDTO {
-    private Guarnizione guarnizione;
+
     private int availableQuantity;
 
-    public GarnishAvailabilityDTO(Guarnizione guarnizione, int availableQuantity) {
-        this.guarnizione = guarnizione;
-        this.availableQuantity = availableQuantity;
-    }
-
-    public Guarnizione getGuarnizione() {
-        return guarnizione;
-    }
-
-    public int getAvailableQuantity() {
-        return availableQuantity;
-    }
-
-    public void setAvailableQuantity(int availableQuantity) {
-        this.availableQuantity = availableQuantity;
-    }
+    private long referenceId;
 }
-

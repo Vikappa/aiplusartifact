@@ -14,7 +14,8 @@ public interface ExtraDAO extends JpaRepository<Extra, Long> {
 
     Optional<Extra> findByName(String name);
 
-    Optional<Extra> findByNameAndUM(String name,String UM);
+    @Query("SELECT e FROM Extra e WHERE e.name = :name AND e.UM = :um")
+    List<Extra> findByNameAndUM(@Param("name") String name, @Param("um") String um);
 
     Extra findTop1ByNameAndUMAndQtaExtraGreaterThanEqual(String name, String UM, int qtaExtra);
 

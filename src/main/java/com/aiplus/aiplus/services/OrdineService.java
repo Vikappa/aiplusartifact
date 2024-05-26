@@ -53,6 +53,23 @@ public class OrdineService {
     @Autowired
     GarnishQuantityDAO garnishQuantityDAO;
 
+    public void processRequestExtras(List<NewExtraQuantity> requestExtras) {
+        for (NewExtraQuantity requestExtra : requestExtras) {
+            List<Extra> allQueryResult = extraDAO.findByNameAndUM(requestExtra.extraName(), requestExtra.um());
+
+            if (allQueryResult.isEmpty()) {
+                // Gestisci il caso in cui non ci sono risultati
+                throw new IllegalArgumentException("No Extra found for name: " + requestExtra.extraName() + " and UM: " + requestExtra.um());
+            }
+
+            // Logica per elaborare i risultati trovati
+            for (Extra extra : allQueryResult) {
+                // Fai qualcosa con ogni `Extra`
+                System.out.println("Found Extra: " + extra.getName() + ", UM: " + extra.getUM());
+            }
+        }
+    }
+
     public ResponseEntity<?> creaOrdine(int tavolo, NewOrdine body) {
         Ordine ordine = new Ordine();
         GinTonic newGinTonic = new GinTonic();
@@ -115,32 +132,42 @@ public class OrdineService {
         List<NewExtraQuantity> requestExtras = body.gintonic().extras();
         List<NewGarnishQuantity> requestGarnishes = body.gintonic().garnishes();
 
+        List<ExtraAvailabilityDTO> extraDisponibili = new ArrayList<>();
+        List<GarnishAvailabilityDTO> garnishDisponibili = new ArrayList<>();
+
         // Gestione degli Extra
         for (NewExtraQuantity requestExtra : requestExtras) {
-            double requestExtraQuantity = requestExtra.quantity();
-            List<ExtraAvailabilityDTO> availableExtras = extraDAO.findAvailableExtras(
-                    requestExtra.extraName(), requestExtra.um(), requestExtra.quantity());
+            List<Extra> allQueryResult = extraDAO.findByNameAndUM(requestExtra.extraName(), requestExtra.um());
+            for (Extra currentExtra : allQueryResult) {
+                ExtraAvailabilityDTO newExtraAvailability = new ExtraAvailabilityDTO();
+                newExtraAvailability.setIdReference(currentExtra.getId());
 
-            for (ExtraAvailabilityDTO dto : availableExtras) {
-                if (requestExtraQuantity <= 0) break;
-
-                Extra extra = dto.getExtra();
-                int availableQuantity = dto.getAvailableQuantity();
-
-                int usedQuantity = (int) Math.min(requestExtraQuantity, availableQuantity);
-                requestExtraQuantity -= usedQuantity;
-
-                ExtraQuantity newExtraQuantity = new ExtraQuantity();
-                newExtraQuantity.setExtra(extra);
-                newExtraQuantity.setGinTonic(newGinTonic);
-                newExtraQuantity.setQuantity(usedQuantity);
-                newExtraQuantity.setUM(requestExtra.um());
-
-                dto.setAvailableQuantity(availableQuantity - usedQuantity);
-                elegibleExtras.add(newExtraQuantity);
+                // Calcola la quantità disponibile al netto degli ExtraQuantity associati
+                int totalUsedQuantity = currentExtra.getExtraQuantities().stream()
+                        .mapToInt(ExtraQuantity::getQuantity)
+                        .sum();
+                newExtraAvailability.setAvailableQuantity(currentExtra.getQtaExtra() - totalUsedQuantity);
+                extraDisponibili.add(newExtraAvailability);
             }
+        }
 
-            if (requestExtraQuantity > 0) {
+        // Implementa la logica per selezionare gli extra idonei basandoti su extraDisponibili
+        for (NewExtraQuantity requestExtra : requestExtras) {
+            int quantityNeeded = requestExtra.quantity();
+            for (ExtraAvailabilityDTO extraDisponibile : extraDisponibili) {
+                if (quantityNeeded <= 0) break;
+                if (extraDisponibile.getAvailableQuantity() > 0) {
+                    int usedQuantity = Math.min(quantityNeeded, extraDisponibile.getAvailableQuantity());
+                    ExtraQuantity newExtraQuantity = new ExtraQuantity();
+                    newExtraQuantity.setExtra(extraDAO.findById(extraDisponibile.getIdReference()).get());
+                    newExtraQuantity.setQuantity(usedQuantity);
+                    newExtraQuantity.setUM(requestExtra.um());
+                    elegibleExtras.add(newExtraQuantity);
+                    extraDisponibile.setAvailableQuantity(extraDisponibile.getAvailableQuantity() - usedQuantity);
+                    quantityNeeded -= usedQuantity;
+                }
+            }
+            if (quantityNeeded > 0) {
                 return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(
                         "Non ci sono abbastanza extra disponibili: " + requestExtra.extraName());
             }
@@ -148,35 +175,43 @@ public class OrdineService {
 
         // Gestione dei Garnish
         for (NewGarnishQuantity requestGarnish : requestGarnishes) {
-            double requestGarnishQuantity = requestGarnish.quantity();
-            List<GarnishAvailabilityDTO> availableGarnishes = garnishDAO.findAvailableGarnishes(
-                    requestGarnish.garnishName(), requestGarnish.um(), requestGarnish.quantity());
+            List<Guarnizione> allQueryResult = garnishDAO.findAllByNameAndUM(requestGarnish.garnishName(), requestGarnish.um());
+            for (Guarnizione currentGarnish : allQueryResult) {
+                GarnishAvailabilityDTO newGarnishAvailability = new GarnishAvailabilityDTO();
+                newGarnishAvailability.setReferenceId(currentGarnish.getId());
 
-            for (GarnishAvailabilityDTO dto : availableGarnishes) {
-                if (requestGarnishQuantity <= 0) break;
-
-                Guarnizione garnish = dto.getGuarnizione();
-                int availableQuantity = dto.getAvailableQuantity();
-
-                int usedQuantity = (int) Math.min(requestGarnishQuantity, availableQuantity);
-                requestGarnishQuantity -= usedQuantity;
-
-                GarnishQuantity newGarnishQuantity = new GarnishQuantity();
-                newGarnishQuantity.setGuarnizione(garnish);
-                newGarnishQuantity.setGinTonic(newGinTonic);
-                newGarnishQuantity.setQuantity(usedQuantity);
-                newGarnishQuantity.setUM(requestGarnish.um());
-
-                dto.setAvailableQuantity(availableQuantity - usedQuantity);
-                elegibleGarnishes.add(newGarnishQuantity);
+                // Calcola la quantità disponibile al netto dei GarnishQuantity associati
+                int totalUsedQuantity = currentGarnish.getGarnishQuantities().stream()
+                        .mapToInt(GarnishQuantity::getQuantity)
+                        .sum();
+                newGarnishAvailability.setAvailableQuantity(currentGarnish.getQuantitaGarnish() - totalUsedQuantity);
+                garnishDisponibili.add(newGarnishAvailability);
             }
+        }
 
-            if (requestGarnishQuantity > 0) {
+        // Implementa la logica per selezionare i garnish idonei basandoti su garnishDisponibili
+        for (NewGarnishQuantity requestGarnish : requestGarnishes) {
+            int quantityNeeded = requestGarnish.quantity();
+            for (GarnishAvailabilityDTO garnishDisponibile : garnishDisponibili) {
+                if (quantityNeeded <= 0) break;
+                if (garnishDisponibile.getAvailableQuantity() > 0) {
+                    int usedQuantity = Math.min(quantityNeeded, garnishDisponibile.getAvailableQuantity());
+                    GarnishQuantity newGarnishQuantity = new GarnishQuantity();
+                    newGarnishQuantity.setGuarnizione(garnishDAO.findById(garnishDisponibile.getReferenceId()).get());
+                    newGarnishQuantity.setQuantity(usedQuantity);
+                    newGarnishQuantity.setUM(requestGarnish.um());
+                    elegibleGarnishes.add(newGarnishQuantity);
+                    garnishDisponibile.setAvailableQuantity(garnishDisponibile.getAvailableQuantity() - usedQuantity);
+                    quantityNeeded -= usedQuantity;
+                }
+            }
+            if (quantityNeeded > 0) {
                 return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(
                         "Non ci sono abbastanza garnish disponibili: " + requestGarnish.garnishName());
             }
         }
 
+        // Completa l'ordine
         if (ginBottleGot && tonicaBottleGot) {
             ordine.setStatus(ORDER_STATUS.SENT);
             ordine.setNTavolo(tavolo);

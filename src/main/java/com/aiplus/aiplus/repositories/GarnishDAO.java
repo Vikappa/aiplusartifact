@@ -15,6 +15,9 @@ public interface GarnishDAO extends JpaRepository<Guarnizione, Long> {
     @Query("SELECT g FROM Guarnizione g WHERE g.name = :name AND g.UM = :um")
     Optional<Guarnizione> findByNameAndUM(@Param("name") String name, @Param("um") String um);
 
+    @Query("SELECT g FROM Guarnizione g WHERE g.name = :name AND g.UM = :um")
+    List<Guarnizione> findAllByNameAndUM(@Param("name") String name, @Param("um") String um);
+
     Guarnizione findTop1ByNameAndUMAndQuantitaGarnishGreaterThanEqual(String name, String UM, int quantitaGarnish);
 
     @Query("SELECT new com.aiplus.aiplus.payloads.records.GarnishAvailabilityDTO(g, (g.quantitaGarnish - COALESCE((SELECT SUM(gq.quantity) FROM GarnishQuantity gq WHERE gq.guarnizione.id = g.id), 0))) " +
