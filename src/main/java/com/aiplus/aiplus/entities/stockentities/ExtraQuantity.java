@@ -19,6 +19,7 @@ public class ExtraQuantity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    @JsonBackReference
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "extra_id")
     private Extra extra;
