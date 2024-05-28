@@ -74,8 +74,7 @@ public class RicettaService {
         List<GarnishQuantity> garnishes = new ArrayList<>();
 
         for (ExtraQuantityDTO extraDTO : extrasDTO) {
-            List<Extra> extraList = extraDAO.findFirstByNameAndUMAndQtaExtraGreaterThanZero(extraDTO.getExtraId(), extraDTO.getUM());
-            if (extraList.isEmpty()) {
+            List<Extra> extraList = extraDAO.findByNameAndUM(extraDTO.getExtraId(), extraDTO.getUM());            if (extraList.isEmpty()) {
                 logger.error("Invalid extra ID: {}", extraDTO.getExtraId());
                 throw new IllegalArgumentException("Invalid extra ID: " + extraDTO.getExtraId());
             }
@@ -89,8 +88,7 @@ public class RicettaService {
         }
 
         for (GarnishQuantityDTO garnishDTO : garnishesDTO) {
-            Optional<Guarnizione> guarnizioneOpt = garnishDAO.findFirstByNameAndUMAndQuantitaGarnishGreaterThanZero(garnishDTO.getGuarnizioneId(), garnishDTO.getUM());
-            if (!guarnizioneOpt.isPresent()) {
+            Optional<Guarnizione> guarnizioneOpt = garnishDAO.findByNameAndUM(garnishDTO.getGuarnizioneId(), garnishDTO.getUM());            if (!guarnizioneOpt.isPresent()) {
                 logger.error("Invalid guarnizione ID: {}", garnishDTO.getGuarnizioneId());
                 throw new IllegalArgumentException("Invalid guarnizione ID: " + garnishDTO.getGuarnizioneId());
             }
