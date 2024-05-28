@@ -58,7 +58,7 @@ public class RicettaService {
     @Transactional
     public Ricetta createNewRicetta(NewRicetta newRicetta) {
         logger.info(newRicetta.name());
-        logger.info("Creo la ricetta:", newRicetta.name());
+        logger.info("Creo la ricetta: " + newRicetta.name());
 
         GinFlavour ginFlavour = ginFlavourDAO.findByName(newRicetta.gin_flavour_id());
         Flavour tonica = flavourDAO.findByName(newRicetta.flavour_tonica_id());
@@ -79,8 +79,9 @@ public class RicettaService {
 
         for (ExtraQuantityDTO extraDTO : extrasDTO) {
             List<Extra> extraList = extraDAO.findByNameAndUM(extraDTO.getExtraId(), extraDTO.getUM());
-            if (extraList.isEmpty()) {
-                logger.error("Invalid extra ID: {}", extraDTO.getExtraId());
+            if (extraList.size() != 1) {
+                logger.error("Invalid or non-unique extra ID: " + extraDTO.getExtraId());
+                continue;
             }
             Extra extra = extraList.get(0);
             ExtraQuantity newExtra = new ExtraQuantity();
@@ -92,11 +93,12 @@ public class RicettaService {
         }
 
         for (GarnishQuantityDTO garnishDTO : garnishesDTO) {
-            Optional<Guarnizione> guarnizioneOpt = garnishDAO.findByNameAndUM(garnishDTO.getGuarnizioneId(), garnishDTO.getUM());
-            if (!guarnizioneOpt.isPresent()) {
-                logger.error("Invalid guarnizione ID: {}", garnishDTO.getGuarnizioneId());
+            List<Guarnizione> guarnizioneList = garnishDAO.findAllByNameAndUM(garnishDTO.getGuarnizioneId(), garnishDTO.getUM());
+            if (guarnizioneList.size() != 1) {
+                logger.error("Invalid or non-unique guarnizione ID: " + garnishDTO.getGuarnizioneId());
+                continue;
             }
-            Guarnizione guarnizione = guarnizioneOpt.get();
+            Guarnizione guarnizione = guarnizioneList.get(0);
             GarnishQuantity newGarnish = new GarnishQuantity();
             newGarnish.setGuarnizione(guarnizione);
             newGarnish.setRicetta(ricetta);
@@ -109,10 +111,9 @@ public class RicettaService {
         ricetta.setGarnishes(garnishes);
 
         Ricetta savedRicetta = ricettaDAO.save(ricetta);
-        logger.info("New Ricetta created with ID: {}", savedRicetta.getId());
+        logger.info("New Ricetta created with ID: " + savedRicetta.getId());
         return savedRicetta;
     }
-
     private RicettaDTO convertToDTO(Ricetta ricetta) {
         RicettaDTO ricettaDTO = new RicettaDTO();
         ricettaDTO.setId(ricetta.getId());
