@@ -2,6 +2,7 @@ package com.aiplus.aiplus.controllers;
 
 import com.aiplus.aiplus.entities.movimenti.Ordine;
 import com.aiplus.aiplus.payloads.DTO.NewOrdine;
+import com.aiplus.aiplus.payloads.records.OrdineIdPayoad;
 import com.aiplus.aiplus.security.JWTTools;
 import com.aiplus.aiplus.services.OrdineService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +37,7 @@ public class OrdineController {
     }
 
     @PostMapping("/preparato")
-    public ResponseEntity<?> setToPreparato(@RequestBody long id) {
+    public ResponseEntity<?> setToPreparato(@RequestBody OrdineIdPayoad id) {
         return ResponseEntity.ok().body(ordineService.setToPreparato(id));
     }
 }

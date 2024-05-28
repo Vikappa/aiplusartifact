@@ -8,6 +8,7 @@ import com.aiplus.aiplus.payloads.DTO.NewGarnishQuantity;
 import com.aiplus.aiplus.payloads.DTO.NewOrdine;
 import com.aiplus.aiplus.payloads.records.ExtraAvailabilityDTO;
 import com.aiplus.aiplus.payloads.records.GarnishAvailabilityDTO;
+import com.aiplus.aiplus.payloads.records.OrdineIdPayoad;
 import com.aiplus.aiplus.repositories.*;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -263,8 +264,8 @@ public class OrdineService {
         return ordini;
     }
 
-    public Object setToPreparato(long id) {
-        Ordine ordine = ordineDAO.findById(id).get();
+    public Object setToPreparato(OrdineIdPayoad id) {
+        Ordine ordine = ordineDAO.findById(id.ordineId()).get();
         ordine.setStatus(ORDER_STATUS.DELIVERED);
         ordineDAO.save(ordine);
         return "Ordine " + id + " set to DELIVERED";
