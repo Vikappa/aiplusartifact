@@ -43,9 +43,8 @@ public class RicettaService {
     @Autowired
     private ExtraDAO extraDAO;
 
-    public List<RicettaDTO> getAll() {
-        List<Ricetta> ricette = ricettaDAO.findAll();
-        return ricette.stream().map(this::convertToDTO).collect(Collectors.toList());
+    public List<Ricetta> getAll() {
+        return ricettaDAO.findAll();
     }
 
     @Transactional
