@@ -20,7 +20,7 @@ FROM openjdk:11-jre-slim
 WORKDIR /usr/src/app
 
 # Copy the jar file from the build stage
-COPY --from=build /usr/src/app/target/aiplusartifact.jar .
+COPY --from=build /usr/src/app/target/*.jar ./app.jar
 
 # Command to run the application
-CMD ["java", "-jar", "aiplusartifact.jar"]
+CMD ["java", "-jar", "app.jar"]
