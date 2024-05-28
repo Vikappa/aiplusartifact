@@ -3,7 +3,7 @@
   <img src="https://img.shields.io/badge/version-0.9.0-blue" alt="Version: 0.9.0">
 </p>
 <h1 align="center">
-  <img src="logo.png" alt="GinTonic Tailor" width="500px">
+  <img src="logo.png" alt="GinTonic Tailor" width="80px">
 </h1>
 <p align="center">
   <img src="https://img.icons8.com/color/48/000000/spring-logo.png" alt="Spring"/>
