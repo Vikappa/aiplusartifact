@@ -142,7 +142,7 @@ public class RicettaService {
         int ginDosi = (int) (totalGinVolume / 60);
 
         // Trova quante bottiglie di tonica sono disponibili
-        long tonicaCount = tonicaDAO.countByFlavour(ricetta.getTonica());
+        long tonicaCount = tonicaDAO.countByFlavourAndGinTonicIsNull(ricetta.getTonica());
         if (tonicaCount == 0) {
             return 0;
         }
