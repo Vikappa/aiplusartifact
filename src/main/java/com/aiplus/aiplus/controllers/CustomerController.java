@@ -2,7 +2,6 @@ package com.aiplus.aiplus.controllers;
 
 import com.aiplus.aiplus.entities.users.USER_ROLE;
 import com.aiplus.aiplus.payloads.login.CustomerLoginDTO;
-import com.aiplus.aiplus.payloads.login.UserLoginDTO;
 import com.aiplus.aiplus.payloads.login.UserLoginResponseDTO;
 import com.aiplus.aiplus.security.JWTTools;
 import com.aiplus.aiplus.services.CustomerService;

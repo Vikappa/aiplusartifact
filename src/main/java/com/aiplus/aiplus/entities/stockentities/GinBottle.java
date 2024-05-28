@@ -1,12 +1,6 @@
 package com.aiplus.aiplus.entities.stockentities;
-
-import com.aiplus.aiplus.entities.stockentities.GinBrand;
-import com.aiplus.aiplus.entities.stockentities.GinFlavour;
-import com.aiplus.aiplus.entities.stockentities.GinTonic;
-import com.aiplus.aiplus.entities.stockentities.Prodotto;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 

@@ -2,7 +2,6 @@ package com.aiplus.aiplus.controllers;
 
 import com.aiplus.aiplus.entities.movimenti.Ordine;
 import com.aiplus.aiplus.payloads.DTO.NewOrdine;
-import com.aiplus.aiplus.repositories.OrdineDAO;
 import com.aiplus.aiplus.security.JWTTools;
 import com.aiplus.aiplus.services.OrdineService;
 import org.springframework.beans.factory.annotation.Autowired;

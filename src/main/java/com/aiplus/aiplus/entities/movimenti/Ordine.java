@@ -1,7 +1,6 @@
 package com.aiplus.aiplus.entities.movimenti;
 
 import com.aiplus.aiplus.entities.stockentities.GinTonic;
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

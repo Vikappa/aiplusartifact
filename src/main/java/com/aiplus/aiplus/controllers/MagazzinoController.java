@@ -1,6 +1,5 @@
 package com.aiplus.aiplus.controllers;
 
-import com.aiplus.aiplus.payloads.DTO.InventorySummaryDTO;
 import com.aiplus.aiplus.services.MagazzinoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

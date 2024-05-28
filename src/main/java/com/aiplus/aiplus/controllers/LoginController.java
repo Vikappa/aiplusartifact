@@ -1,7 +1,5 @@
 package com.aiplus.aiplus.controllers;
 
-import com.aiplus.aiplus.entities.users.User;
-import com.aiplus.aiplus.exceptions.UnauthorizedException;
 import com.aiplus.aiplus.payloads.login.UserLoginDTO;
 import com.aiplus.aiplus.payloads.login.UserLoginResponseDTO;
 import com.aiplus.aiplus.services.LoginServices;

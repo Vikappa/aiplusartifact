@@ -1,6 +1,5 @@
 package com.aiplus.aiplus.controllers;
 
-import com.aiplus.aiplus.entities.stockentities.Extra;
 import com.aiplus.aiplus.payloads.records.ExtraRowLineShort;
 import com.aiplus.aiplus.services.ExtraService;
 import org.springframework.beans.factory.annotation.Autowired;

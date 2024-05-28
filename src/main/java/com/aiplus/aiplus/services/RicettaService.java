@@ -120,6 +120,7 @@ public class RicettaService {
                 extra.getQuantity(),
                 extra.getUM()
         )).collect(Collectors.toList()));
+
         ricettaDTO.setGarnishes(ricetta.getGarnishes().stream().map(garnish -> new GarnishQuantityDTO(
                 garnish.getGuarnizione().getName(),
                 garnish.getGuarnizione().getName(),
