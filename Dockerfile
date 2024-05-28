@@ -1,14 +1,26 @@
+# Stage 1: Build the application
 FROM maven:3.9.6-eclipse-temurin-8-alpine AS build
 
-COPY pom.xml usr/src/app/
-COPY src usr/src/app/src
+# Set the working directory
+WORKDIR /usr/src/app
 
-RUN mvn -f /usr/src/app/pom.xml clean package -DskipTests
+# Copy the pom.xml file
+COPY pom.xml .
 
+# Copy the source code
+COPY src ./src
+
+# Run the Maven build
+RUN mvn clean package -DskipTests
+
+# Stage 2: Create the final image
 FROM openjdk:11-jre-slim
 
-COPY --from=build /usr/src/app/target/aiplusartifact-0.0.1-SNAPSHOT.jar /usr/src/app/target/aiplusartifact-0.0.1-SNAPSHOT.jar
+# Set the working directory
+WORKDIR /usr/src/app
 
-EXPOSE 8080
+# Copy the jar file from the build stage
+COPY --from=build /usr/src/app/target/aiplusartifact.jar .
 
-ENTRYPOINT ["java","-jar","/usr/src/app/target/aiplusartifact-0.0.1-SNAPSHOT.jar"]
+# Command to run the application
+CMD ["java", "-jar", "aiplusartifact.jar"]
