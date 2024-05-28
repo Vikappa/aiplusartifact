@@ -50,9 +50,6 @@ public class RicettaService {
 
     @Transactional
     public Ricetta createNewRicetta(NewRicetta newRicetta) {
-        if(!ricettaDAO.findByName(newRicetta.name())) {
-            throw new RuntimeException("Ricetta already exists");
-        }
         logger.info(newRicetta.name());
         logger.info("Creo la ricetta:", newRicetta.name());
 
