@@ -8,6 +8,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -28,4 +31,25 @@ public class Ordine {
 
     @Enumerated(EnumType.STRING)
     private ORDER_STATUS status;
+
+    private LocalDateTime dataOrdine;
+
+    private LocalDateTime dataPreparazione;
+
+    @PrePersist
+    protected void onCreate() {
+        dataOrdine = LocalDateTime.now();
+    }
+
+    public void setPreparazione() {
+        this.dataPreparazione = LocalDateTime.now();
+    }
+
+    public String getDataPreparazioneFormatted() {
+        if (dataPreparazione != null) {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+            return dataPreparazione.format(formatter);
+        }
+        return null;
+    }
 }
