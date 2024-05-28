@@ -1,5 +1,5 @@
 # Stage 1: Build the application
-FROM maven:3.9.6-eclipse-temurin-8-alpine AS build
+FROM maven:3.9.6-eclipse-temurin-17-alpine AS build
 
 # Set the working directory
 WORKDIR /usr/src/app
@@ -11,10 +11,10 @@ COPY pom.xml .
 COPY src ./src
 
 # Run the Maven build
-RUN mvn clean package
+RUN mvn clean package -DskipTests
 
 # Stage 2: Create the final image
-FROM openjdk:11-jre-slim
+FROM openjdk:17-slim
 
 # Set the working directory
 WORKDIR /usr/src/app
