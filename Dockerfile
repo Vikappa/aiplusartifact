@@ -1,26 +1,19 @@
 # Stage 1: Build the application
 FROM maven:3.9.6-eclipse-temurin-17-alpine AS build
 
-# Set the working directory
-WORKDIR /usr/src/app
-
 # Copy the pom.xml file
-COPY pom.xml .
-
-# Copy the source code
-COPY src ./src
-
-# Run the Maven build
-RUN mvn clean package -DskipTests
-
-# Stage 2: Create the final image
-FROM openjdk:17-slim
+COPY pom.xml /user/src/app/
 
 # Set the working directory
-WORKDIR /usr/src/app
+COPY src /usr/src/app/src
 
-# Copy the jar file from the build stage
-COPY --from=build /usr/src/app/target/*.jar ./app.jar
+RUN mvn -f /user/src/app/pom.xml clean package -DskipTests
+
+FROM openjdk:21-slim
+
+COPY --from=build /user/src/app/target/app.jar app.jar
+
+EXPOSE 3001
 
 # Command to run the application
 CMD ["java", "-jar", "app.jar"]
