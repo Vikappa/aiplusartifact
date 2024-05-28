@@ -43,9 +43,8 @@ public class RicettaService {
     @Autowired
     private ExtraDAO extraDAO;
 
-    public List<RicettaDTO> getAll() {
-        List<Ricetta> ricette = ricettaDAO.findAll();
-        return ricette.stream().map(this::convertToDTO).collect(Collectors.toList());
+    public List<Ricetta> getAll() {
+        return ricettaDAO.findAll();
     }
 
     @Transactional
@@ -76,7 +75,7 @@ public class RicettaService {
                 logger.error("Invalid extra ID: {}", extraDTO.getExtraId());
                 throw new IllegalArgumentException("Invalid extra ID: " + extraDTO.getExtraId());
             }
-            Extra extra = extraList.get(0); // Prendi il primo elemento dalla lista
+            Extra extra = extraList.get(0);
             ExtraQuantity newExtra = new ExtraQuantity();
             newExtra.setExtra(extra);
             newExtra.setRicetta(ricetta);
