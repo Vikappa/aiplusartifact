@@ -1,6 +1,5 @@
 package com.aiplus.aiplus.services;
 
-import com.aiplus.aiplus.payloads.DTO.GinBottleLineShort;
 import com.aiplus.aiplus.payloads.DTO.TonicaBottleLineShort;
 import com.aiplus.aiplus.repositories.TonicaDAO;
 import org.springframework.beans.factory.annotation.Autowired;
