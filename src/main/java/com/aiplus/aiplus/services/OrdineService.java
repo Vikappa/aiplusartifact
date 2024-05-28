@@ -222,6 +222,8 @@ public class OrdineService {
             newGinTonic.setGarnishes(elegibleGarnishes);
             newGinTonic.setTonica(tonica);
 
+            newGinTonic.setFinalPrice(newGinTonic.getBASE_PRICE() + newGinTonic.getGinBottle().getBrand().getSovrapprezzo() + (newGinTonic.getExtras().size() * 0.5) + (newGinTonic.getGarnishes().size()*0.25) );
+
             tonica.setGinTonic(newGinTonic);
 
             ordine = ordineDAO.save(ordine);

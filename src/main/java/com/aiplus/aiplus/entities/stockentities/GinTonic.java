@@ -51,5 +51,5 @@ public class GinTonic {
     @OneToMany(mappedBy = "ginTonic", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<GarnishQuantity> garnishes;
 
-    private int finalPrice;
+    private double finalPrice;
 }
