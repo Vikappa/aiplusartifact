@@ -1,14 +1,15 @@
+
 # Stage 1: Build the application
 FROM maven:3.9.6-eclipse-temurin-17-alpine AS build
-
-# Copy the pom.xml file
-COPY pom.xml /usr/src/app/
 
 # Set the working directory
 WORKDIR /usr/src/app
 
+# Copy the pom.xml file
+COPY pom.xml .
+
 # Copy the source code
-COPY src /usr/src/app/src
+COPY src ./src
 
 # Build the application
 RUN mvn clean package -DskipTests
@@ -17,7 +18,7 @@ RUN mvn clean package -DskipTests
 FROM openjdk:17-slim
 
 # Copy the built jar from the previous stage
-COPY --from=build /usr/src/app/target/aiplusartifact-0.0.1-SNAPSHOT.jar.original app.jar
+COPY --from=build /usr/src/app/target/aiplusartifact-0.0.1-SNAPSHOT.jar app.jar
 
 # Expose the port
 EXPOSE 3001
