@@ -262,4 +262,11 @@ public class OrdineService {
         }
         return ordini;
     }
+
+    public Object setToPreparato(long id) {
+        Ordine ordine = ordineDAO.findById(id).get();
+        ordine.setStatus(ORDER_STATUS.DELIVERED);
+        ordineDAO.save(ordine);
+        return "Ordine " + id + " set to DELIVERED";
+    }
 }

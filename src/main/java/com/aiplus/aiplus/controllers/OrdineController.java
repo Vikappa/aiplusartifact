@@ -35,4 +35,8 @@ public class OrdineController {
         return ResponseEntity.ok().body(ordineService.getAll());
     }
 
+    @PostMapping("/preparato")
+    public ResponseEntity<?> setToPreparato(@RequestBody long id) {
+        return ResponseEntity.ok().body(ordineService.setToPreparato(id));
+    }
 }
