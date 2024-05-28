@@ -24,4 +24,6 @@ public interface ExtraDAO extends JpaRepository<Extra, Long> {
             "WHERE e.name = :name AND e.UM = :um AND (e.qtaExtra - COALESCE((SELECT SUM(eq.quantity) FROM ExtraQuantity eq WHERE eq.extra.id = e.id), 0)) >= :requiredQuantity")
     List<ExtraAvailabilityDTO> findAvailableExtras(@Param("name") String name, @Param("um") String um, @Param("requiredQuantity") int requiredQuantity);
 
+    @Query("SELECT e FROM Extra e WHERE e.name = :name AND e.UM = :um AND e.qtaExtra > 0 ORDER BY e.id ASC")
+    List<Extra> findFirstByNameAndUMAndQtaExtraGreaterThanZero(@Param("name") String name, @Param("um") String um);
 }
