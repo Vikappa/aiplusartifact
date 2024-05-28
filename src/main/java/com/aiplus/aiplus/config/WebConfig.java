@@ -8,8 +8,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**")  // Permette CORS su tutte le rotte
-                .allowedOrigins("http://localhost:5173", "https://aipluswebinterface.vercel.app") // URL del tuo frontend React
+        registry.addMapping("/**")
+                .allowedOrigins("http://localhost:5173", "https://aipluswebinterface.vercel.app")
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                 .allowedHeaders("*")
                 .allowCredentials(true);
