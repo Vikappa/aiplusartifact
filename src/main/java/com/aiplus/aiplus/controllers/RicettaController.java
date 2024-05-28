@@ -26,8 +26,7 @@ public class RicettaController {
     }
 
     @GetMapping("/getall")
-    public ResponseEntity<List<Ricetta>> getAllRicette() {
-        List<Ricetta> ricette = ricettaService.getAll();
-        return ResponseEntity.ok(ricette);
+    public ResponseEntity<List<RicettaDTO>> getAllRicette() {
+        return ResponseEntity.ok(ricettaService.getAll());
     }
 }

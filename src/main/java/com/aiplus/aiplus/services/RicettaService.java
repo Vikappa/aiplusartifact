@@ -43,8 +43,16 @@ public class RicettaService {
     @Autowired
     private ExtraDAO extraDAO;
 
-    public List<Ricetta> getAll() {
-        return ricettaDAO.findAll();
+    public List<RicettaDTO> getAll() {
+        List<Ricetta> ricette = ricettaDAO.findAll();
+        List<RicettaDTO> ricetteDTO = new ArrayList<>();
+
+
+        for (Ricetta ricetta : ricette) {
+            ricetteDTO.add(convertToDTO(ricetta));
+        }
+
+        return ricetteDTO;
     }
 
     @Transactional
