@@ -1,5 +1,6 @@
 package com.aiplus.aiplus.entities.stockentities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -32,7 +33,7 @@ public class Extra extends Prodotto {
         this.qtaExtra = qtaExtra;
     }
 
-    @JsonManagedReference
+    @JsonBackReference
     @OneToMany(mappedBy = "extra", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ExtraQuantity> extraQuantities;
 }
