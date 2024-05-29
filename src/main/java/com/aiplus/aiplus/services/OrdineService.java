@@ -251,7 +251,7 @@ public class OrdineService {
 
     @Transactional
     public List<Ordine> getAll() {
-        List<Ordine> ordini = ordineDAO.findAll();
+        List<Ordine> ordini = ordineDAO.findTop10ByOrderByDataOrdineDesc();
         for (Ordine ordine : ordini) {
             GinTonic ginTonic = ordine.getGinTonic();
             if (ginTonic != null) {
@@ -263,6 +263,7 @@ public class OrdineService {
         }
         return ordini;
     }
+
 
     public Object setToPreparato(OrdineIdPayoad id) {
         Ordine ordine = ordineDAO.findById(id.ordineId()).get();
