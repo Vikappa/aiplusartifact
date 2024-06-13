@@ -21,9 +21,8 @@ public class LoginServices {
     @Autowired
     JWTTools jwtTools;
 
-    public String authenticateUserAndGenerateToken(UserLoginDTO userLoginDTO){
+    public String authenticateUserAndGenerateToken(UserLoginDTO userLoginDTO) {
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        try {
         User user = userDAO.findByEmail(userLoginDTO.email());
 
         if (user == null) {
@@ -35,25 +34,20 @@ public class LoginServices {
         }
 
         return jwtTools.createToken(user);
-
-        } catch (UserNotFoundException e) {
-            return e.getMessage();
-        }
     }
 
+    public USER_ROLE getRole(UserLoginDTO userLoginDTO) {
+        User user = userDAO.findByEmail(userLoginDTO.email());
 
-
-    public USER_ROLE getRole(UserLoginDTO userLoginDTO){
-        try {
-            User user = userDAO.findByEmail(userLoginDTO.email());
-            return user.getRole();
-        } catch (UserNotFoundException e) {
+        if (user == null) {
             throw new UnauthorizedException("Invalid credentials, cannot find role");
         }
+
+        return user.getRole();
     }
 
     public User getUserByEmail(String email) {
         return userDAO.findByEmail(email);
     }
-
 }
+

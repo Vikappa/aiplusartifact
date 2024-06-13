@@ -1,5 +1,6 @@
 package com.aiplus.aiplus.controllers;
 
+import com.aiplus.aiplus.entities.users.USER_ROLE;
 import com.aiplus.aiplus.payloads.login.UserLoginDTO;
 import com.aiplus.aiplus.payloads.login.UserLoginResponseDTO;
 import com.aiplus.aiplus.services.LoginServices;
@@ -14,9 +15,10 @@ public class LoginController {
     @Autowired
     LoginServices loginService;
 
-    @PostMapping
-    public UserLoginResponseDTO login(@RequestBody @Validated UserLoginDTO userLoginDTO){
-        return new UserLoginResponseDTO(this.loginService.authenticateUserAndGenerateToken(userLoginDTO), this.loginService.getRole(userLoginDTO));
+    @PostMapping("/login")
+    public UserLoginResponseDTO login(@RequestBody @Validated UserLoginDTO userLoginDTO) {
+        String token = this.loginService.authenticateUserAndGenerateToken(userLoginDTO);
+        USER_ROLE role = this.loginService.getRole(userLoginDTO);
+        return new UserLoginResponseDTO(token, role);
     }
-
 }
