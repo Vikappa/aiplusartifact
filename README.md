@@ -11,7 +11,7 @@
   <img src="https://img.icons8.com/color/48/000000/postgreesql.png" alt="PostgreSQL"/>
   <img src="https://img.icons8.com/color/48/000000/hibernate.png" alt="Hibernate"/>
 </p>
-GinTonic Tailor è un progetto nato con l'obiettivo di ottimizzare la gestione di magazzino e il sistema di ordinazioni automatico. Il progetto frontend è disponibile a questo <a href="https://github.com/Vikappa/aipluswebinterface">link</a>. Utilizzando Java Spring, il progetto sfrutta Spring Security per l'autenticazione e @MethodSecurity per l'autorizzazione, garantendo un alto livello di sicurezza e controllo degli accessi. I dati sono gestiti su un database PostgreSQL, con Hibernate utilizzato per la Java Persistence API (JPA), permettendo un'integrazione fluida e efficiente tra il codice Java e il database relazionale.
+Aipiu Tailor è un progetto nato con l'obiettivo di ottimizzare la gestione di magazzino e il sistema di ordinazioni automatico. Il progetto frontend è disponibile a questo <a href="https://github.com/Vikappa/aipluswebinterface">link</a>. Utilizzando Java Spring, il progetto sfrutta Spring Security per l'autenticazione e @MethodSecurity per l'autorizzazione, garantendo un alto livello di sicurezza e controllo degli accessi. I dati sono gestiti su un database PostgreSQL, con Hibernate utilizzato per la Java Persistence API (JPA), permettendo un'integrazione fluida e efficiente tra il codice Java e il database relazionale.
 
 Spring Security: Implementazione di un sistema robusto di autenticazione e autorizzazione per garantire la sicurezza delle operazioni di magazzino.
 @MethodSecurity: Utilizzo di annotazioni per gestire l'autorizzazione a livello di metodo, assicurando che solo gli utenti autorizzati possano eseguire determinate azioni.
