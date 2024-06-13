@@ -20,4 +20,10 @@ public class ExceptionsHandler {
         ErrorsResponseDTO errorResponse = new ErrorsResponseDTO(e.getMessage(), LocalDateTime.now(), e.getErrorCode());
         return new ResponseEntity<>(errorResponse, HttpStatus.UNAUTHORIZED);
     }
+
+    @ExceptionHandler(UserNotFoundException.class)
+    public ResponseEntity<ErrorsResponseDTO> handleUserNotFoundException(UserNotFoundException e) {
+        ErrorsResponseDTO errorResponse = new ErrorsResponseDTO(e.getMessage(), LocalDateTime.now(), 404);
+        return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+    }
 }
