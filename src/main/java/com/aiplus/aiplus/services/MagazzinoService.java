@@ -1,9 +1,6 @@
 package com.aiplus.aiplus.services;
 
-import com.aiplus.aiplus.payloads.records.ExtraSummaryDTO;
-import com.aiplus.aiplus.payloads.records.GarnishSummaryDTO;
-import com.aiplus.aiplus.payloads.records.GinBottleSummaryDTO;
-import com.aiplus.aiplus.payloads.records.TonicaSummaryDTO;
+import com.aiplus.aiplus.payloads.records.*;
 import com.aiplus.aiplus.repositories.ProdottoDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -21,8 +18,10 @@ public class MagazzinoService {
     private ProdottoDAO prodottoDAO;
 
     public List<GinBottleSummaryDTO> getGinBottleSummary() {
-        return prodottoDAO.summarizeGinBottle();
+        List<GinBottleSummaryDTO> summaries = prodottoDAO.summarizeGinBottle();
+        return summaries;
     }
+
 
     public List<TonicaSummaryDTO> getTonicaSummary() {
         return prodottoDAO.summarizeTonica();

@@ -46,7 +46,7 @@ public class JWTTools {
         } catch (ExpiredJwtException e) {
             throw new InvalidTokenException("Expired token", 511);
         } catch (SignatureException | MalformedJwtException e) {
-            throw new InvalidTokenException("Invalid token", 512);
+           throw new InvalidTokenException("Invalid token", 512);
         } catch (Exception e) {
             throw new InvalidTokenException("Token verification failed", 513);
         }

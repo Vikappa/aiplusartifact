@@ -15,7 +15,7 @@ public class LoginController {
     @Autowired
     LoginServices loginService;
 
-    @PostMapping("/login")
+    @PostMapping()
     public UserLoginResponseDTO login(@RequestBody @Validated UserLoginDTO userLoginDTO) {
         String token = this.loginService.authenticateUserAndGenerateToken(userLoginDTO);
         USER_ROLE role = this.loginService.getRole(userLoginDTO);

@@ -15,11 +15,15 @@ import java.util.List;
 public interface ProdottoDAO extends JpaRepository<Prodotto, Long> {
 
     @Query("SELECT p.name as name, p.UM as um, p.ginFlavour.name as flavour, p.expirationDate as expirationDate, " +
+            "p.currentVolume as currentVolume, " +
             "SUM(p.currentVolume) as totalVolume, COUNT(p) as totalQuantity, p.brand.name as ginBrand, p.brand.imageUrl as ginImage " +
             "FROM GinBottle p " +
             "WHERE p.currentVolume > 0 " +
-            "GROUP BY p.name, p.UM, p.ginFlavour.name, p.expirationDate, p.brand.name, p.brand.imageUrl")
+            "GROUP BY p.name, p.UM, p.ginFlavour.name, p.expirationDate, p.currentVolume, p.brand.name, p.brand.imageUrl")
     List<GinBottleSummaryDTO> summarizeGinBottle();
+
+
+
 
     @Query("SELECT p.name as name, p.UM as um, p.brandTonica.name as brand, p.flavour.name as flavour, " +
             "COUNT(p) as totalQuantity " +
