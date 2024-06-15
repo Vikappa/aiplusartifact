@@ -5,6 +5,7 @@ import com.aiplus.aiplus.entities.stockentities.GinBrand;
 import com.aiplus.aiplus.entities.stockentities.GinFlavour;
 import com.aiplus.aiplus.payloads.DTO.GinBottleDTO;
 import com.aiplus.aiplus.payloads.DTO.GinBottleLineShort;
+import com.aiplus.aiplus.payloads.DTO.totalresumeDTOs.AllbottlesresumeDTO;
 import com.aiplus.aiplus.repositories.GinBottleDAO;
 import com.aiplus.aiplus.repositories.GinBrandDAO;
 import com.aiplus.aiplus.repositories.GinFlavourDAO;
@@ -103,5 +104,29 @@ public class GinBottleService {
 
         return ResponseEntity.ok().body(ritorno);
     }
+
+
+
+    public List<AllbottlesresumeDTO> getTotalResume() {
+        List<Object[]> results = ginBottleDAO.getTotalResume();
+        return results.stream()
+                .map(result -> new AllbottlesresumeDTO(
+                        (Long) result[0],
+                        (String) result[1],
+                        (String) result[2],
+                        (Double) result[3],
+                        (Double) result[4],
+                        (LocalDate) result[5],
+                        (LocalDate) result[6],
+                        (Double) result[7],
+                        (Long) result[8],
+                        (String) result[9], // carico data
+                        (String) result[10],
+                        (String) result[11]
+                ))
+                .collect(Collectors.toList());
+    }
+
 }
+
 

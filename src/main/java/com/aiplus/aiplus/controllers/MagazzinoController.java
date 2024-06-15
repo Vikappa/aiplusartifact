@@ -17,9 +17,17 @@ public class MagazzinoController {
 
     @Autowired
     private MagazzinoService magazzinoService;
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'BARMAN', 'CUSTOMER')")
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     @GetMapping("/resume")
     public ResponseEntity<List<Object>> getResume(){
         return magazzinoService.getResume();
     }
+
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    @GetMapping("/getTotalResume")
+    public ResponseEntity<?> getTotalResume(){
+        return ResponseEntity.ok(magazzinoService.getTotalResume());
+    }
+
+
 }

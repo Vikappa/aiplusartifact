@@ -21,4 +21,7 @@ public interface GinBottleDAO extends JpaRepository<GinBottle, Long> {
     List<Object[]> findGinBottlesGroupedByBrandAndFlavourAndName();
 
     List<GinBottle> findByNameAndGinFlavour_NameAndBrand_NameAndCurrentVolumeGreaterThanEqual(String name, String ginFlavourName, String brandName, double currentVolume);
+    @Query("SELECT g.id, g.UM, g.name, g.alcoholPercentage, g.currentVolume, g.expirationDate, g.productionDate, g.volume, g.carico.nCarico, g.carico.data, g.brand.name, g.ginFlavour.name FROM GinBottle g WHERE g.currentVolume > 0")
+    List<Object[]> getTotalResume();
+
 }
