@@ -1,6 +1,7 @@
 package com.aiplus.aiplus.repositories;
 
 import com.aiplus.aiplus.entities.stockentities.Guarnizione;
+import com.aiplus.aiplus.payloads.DTO.totalresumeDTOs.AllgarnishresumeDTO;
 import com.aiplus.aiplus.payloads.records.GarnishAvailabilityDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -27,4 +28,13 @@ public interface GarnishDAO extends JpaRepository<Guarnizione, Long> {
 
     @Query("SELECT g FROM Guarnizione g WHERE g.name = :name AND g.UM = :um AND g.quantitaGarnish > 0 ORDER BY g.id ASC")
     Optional<Guarnizione> findFirstByNameAndUMAndQuantitaGarnishGreaterThanZero(@Param("name") String name, @Param("um") String um);
+
+
+    @Query("SELECT new com.aiplus.aiplus.payloads.DTO.totalresumeDTOs.AllgarnishresumeDTO(" +
+            "g.name, g.UM, g.carico.nCarico, g.flavour.name, g.colore.name, " +
+            "(g.quantitaGarnish - COALESCE(SUM(gq.quantity), 0))) " +
+            "FROM Guarnizione g " +
+            "LEFT JOIN g.garnishQuantities gq " +
+            "GROUP BY g.id, g.name, g.UM, g.carico.nCarico, g.flavour.name, g.colore.name, g.quantitaGarnish")
+    List<AllgarnishresumeDTO> totalResume();
 }

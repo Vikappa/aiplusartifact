@@ -25,4 +25,7 @@ public class GarnishService {
                 .collect(Collectors.toList())) ;
     }
 
+    public List getTotalResume() {
+        return garnishDAO.totalResume();
+    }
 }

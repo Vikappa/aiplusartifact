@@ -38,4 +38,9 @@ public interface TonicaDAO extends JpaRepository<Tonica, Long> {
             "WHERE t.flavour = :flavour " +
             "AND t.ginTonic IS NULL")
     long countByFlavourAndGinTonicIsNull(Flavour flavour);
+
+    @Query("SELECT t.id, t.UM, t.name, t.flavour.name AS flavourName, t.scadenza_tonica, t.brandTonica.name AS brandName, t.carico.nCarico, t.carico.data " +
+            "FROM Tonica t " +
+            "WHERE t.ginTonic IS NULL")
+    List<Object[]> findTonicheNonAssociateAGinTonicConCarico();
 }

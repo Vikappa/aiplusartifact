@@ -24,8 +24,8 @@ public class MagazzinoController {
     }
 
     @PreAuthorize("hasAnyAuthority('ADMIN')")
-    @GetMapping("/getTotalResume")
-    public ResponseEntity<?> getTotalResume(){
+    @GetMapping("/totalresume")
+    public ResponseEntity<List[]> getTotalResume(){
         return ResponseEntity.ok(magazzinoService.getTotalResume());
     }
 

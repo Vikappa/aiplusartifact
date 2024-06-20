@@ -2,12 +2,14 @@ package com.aiplus.aiplus.services;
 
 
 import com.aiplus.aiplus.entities.stockentities.Extra;
+import com.aiplus.aiplus.payloads.DTO.totalresumeDTOs.AllextraresumeDTO;
 import com.aiplus.aiplus.payloads.records.ExtraRowLineShort;
 import com.aiplus.aiplus.repositories.ExtraDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,6 +25,11 @@ public class ExtraService {
                 .map(extra -> new ExtraRowLineShort(extra.getName(), extra.getUM(), extra.getFlavour()))
                 .distinct()
                 .collect(Collectors.toList())) ;
+    }
+
+    public List<AllextraresumeDTO> getTotalResume(){
+        List<AllextraresumeDTO> allExtraQueryResult = extraDao.totalResume();
+        return  allExtraQueryResult;
     }
 }
 
